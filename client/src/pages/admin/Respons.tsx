@@ -33,6 +33,8 @@ export default function ResponsPage() {
   const [periodeList, setPeriodeList] = useState<any[]>([]);
   const [data, setData] = useState<any>(null);
   const [detail, setDetail] = useState<any>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; nama: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -64,6 +66,12 @@ export default function ResponsPage() {
     const alasan = prompt("Alasan anulir (wajib diisi):"); if (!alasan || !alasan.trim()) return;
     await apiFetch(`/respons/${id}/anulir`, { method: "POST", body: JSON.stringify({ alasan: alasan.trim() }) });
     setDetail(null); load();
+  };
+  const doDelete = async () => {
+    if (!confirmDelete) return;
+    setDeleting(true);
+    try { await apiFetch(`/respons/${confirmDelete.id}`, { method: "DELETE" }); setConfirmDelete(null); if (detail?.id === confirmDelete.id) setDetail(null); load(); }
+    catch (e: any) { alert(e?.message ?? String(e)); } finally { setDeleting(false); }
   };
   const total = data?.total ?? 0;
   const totalPages = data?.totalPages ?? 1;
@@ -151,7 +159,8 @@ export default function ResponsPage() {
                     </td>
                     <td className="px-6 py-4 text-right whitespace-nowrap">
                       <button onClick={() => open(r.id)} className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-indigo-200 hover:text-indigo-700 hover:bg-indigo-50 text-xs font-bold shadow-sm">Lihat</button>
-                      {r.status !== "anulir" && <button onClick={() => anulir(r.id)} className="ml-1 px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-rose-200 hover:text-rose-700 hover:bg-rose-50 text-xs font-bold">Anulir</button>}
+                      {r.status !== "anulir" && <button onClick={() => anulir(r.id)} className="ml-1 px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-amber-200 hover:text-amber-700 hover:bg-amber-50 text-xs font-bold">Anulir</button>}
+                      <button onClick={() => setConfirmDelete({ id: r.id, nama })} className="ml-1 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-sm">Hapus</button>
                     </td>
                   </tr>
                 );
@@ -233,7 +242,27 @@ export default function ResponsPage() {
             </div>
             <div className="p-4 border-t border-slate-100 bg-slate-50/60 flex justify-end gap-2">
               <button onClick={() => setDetail(null)} className="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-bold">Tutup</button>
-              {detail.status !== "anulir" && <button onClick={() => anulir(detail.id)} className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold">Anulir</button>}
+              {detail.status !== "anulir" && <button onClick={() => anulir(detail.id)} className="px-5 py-2.5 rounded-xl bg-white border border-amber-200 text-amber-700 hover:bg-amber-50 text-sm font-bold">Anulir</button>}
+              <button onClick={() => setConfirmDelete({ id: detail.id, nama: String((detail.identitas as any)?.nama ?? "—") })} className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold">Hapus</button>
+            </div>
+          </div>
+        </div>, document.body)}
+
+      {/* Konfirmasi hapus — portal agar tidak terpotong tabel */}
+      {confirmDelete && createPortal(
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => !deleting && setConfirmDelete(null)} />
+          <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up">
+            <div className="p-6">
+              <div className="w-12 h-12 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 grid place-items-center"><span className="text-xl">⚠</span></div>
+              <h3 className="mt-4 text-base font-bold text-slate-900">Hapus data penilaian?</h3>
+              <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                Data responden <b className="text-slate-900">{confirmDelete.nama}</b> akan dihapus permanen beserta jawaban skala &amp; terbuka. Tidak dapat dikembalikan. Lanjutkan?
+              </p>
+            </div>
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">
+              <button disabled={deleting} onClick={() => setConfirmDelete(null)} className="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-bold disabled:opacity-50">Batal</button>
+              <button disabled={deleting} onClick={doDelete} className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold disabled:opacity-50">{deleting ? "Menghapus…" : "Ya, hapus"}</button>
             </div>
           </div>
         </div>, document.body)}

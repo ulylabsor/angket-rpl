@@ -195,8 +195,8 @@ responsRouter.post("/:id/anulir", auth(["SUPER_ADMIN", "ADMIN_MONEV"]), async (r
   res.json(updated);
 });
 
-// DELETE /api/respons/:id — hard delete super admin saja
-responsRouter.delete("/:id", auth(["SUPER_ADMIN"]), async (req, res) => {
+// DELETE /api/respons/:id — hard delete (admin bisa hapus penilaian responden)
+responsRouter.delete("/:id", auth(["SUPER_ADMIN", "ADMIN_MONEV"]), async (req, res) => {
   const r = await prisma.respons.findUnique({ where: { id: req.params.id } });
   if (!r) return res.status(404).json({ error: "Tidak ditemukan" });
   await prisma.jawabanSkala.deleteMany({ where: { responsId: r.id } });
