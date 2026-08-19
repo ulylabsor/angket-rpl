@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Master ──────────────────────────────────────────────────
+
+model Fakultas {
+  id        String   @id @default(cuid())
+  nama      String   @unique
+  kode      String?  @unique
+  createdAt DateTime @default(now())
+  prodi     Prodi[]
+}
+
+model Prodi {
+  id         String   @id @default(cuid())
+  nama       String
+  fakultasId String
+  fakultas   Fakultas @relation(fields: [fakultasId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@unique([nama, fakultasId])
+  @@index([fakultasId])
+}
+
+// ── Periode Monev ───────────────────────────────────────────
+
+model PeriodeMonev {
+  id          String   @id @default(cuid())
+  nama        String
+  tahun       Int
+  tglMulai    DateTime @db.Date
+  tglSelesai  DateTime @db.Date
+  status      String   @default("draft") // draft | aktif | tutup
+  deskripsi   String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  respons     Respons[]
+  temuan      Temuan[]
+  beritaAcara BeritaAcara[]
+}
+
+// ── Angket Template & Butir ─────────────────────────────────
+
+model AngketTemplate {
+  kode  String  @id // UNIV, FAK, ASESOR, LPM, SEK, MHS
+  nama  String
+  butir Butir[]
+}
+
+model Butir {
+  id         String         @id @default(cuid())
+  templateId String
+  dimensi    String // Input | Proses | Output | Administrasi & Pelayanan | Informasi & Pendaftaran | Proses Asesmen | Hasil Rekognisi
+  nomor      Int
+  teks       String         @db.Text
+  urut       Int
+  aktif      Boolean        @default(true)
+  template   AngketTemplate @relation(fields: [templateId], references: [kode])
+
+  @@index([templateId])
+  @@unique([templateId, nomor])
+}
+
+// ── Respons ─────────────────────────────────────────────────
+
+model Respons {
+  id           String   @id @default(cuid())
+  periodeId    String
+  periode      PeriodeMonev @relation(fields: [periodeId], references: [id])
+  templateKode String
+  // identitas: { nama, jabatan, unit, prodi?, fakultas? } — prodi/fakultas hanya untuk FAK & MHS
+  identitas    Json
+  status       String   @default("submitted") // submitted | anulir
+  alasanAnulir String?  @db.Text
+  // jawaban
+  jawabanSkala   JawabanSkala[]
+  jawabanTerbuka JawabanTerbuka?
+  // hitung denormalized
+  skorInput    Float?
+  skorProses   Float?
+  skorOutput   Float? // untuk SEK = skorAdministrasi; MHS: skorHasil
+  nilaiInput   Float?
+  nilaiProses  Float?
+  nilaiOutput  Float?
+  nilaiAkhir   Float?
+  kategori     String?
+  tindakLanjut String?
+  createdAt    DateTime @default(now())
+  submittedAt  DateTime @default(now())
+  ip           String?  @db.VarChar(45)
+  userAgent    String?  @db.Text
+
+  @@index([periodeId])
+  @@index([templateKode])
+  @@index([kategori])
+  @@index([createdAt])
+}
+
+model JawabanSkala {
+  id        String  @id @default(cuid())
+  responsId String
+  respons   Respons @relation(fields: [responsId], references: [id], onDelete: Cascade)
+  butirId   String
+  skor      Int // 1-5
+
+  @@index([responsId])
+  @@index([butirId])
+  @@unique([responsId, butirId])
+}
+
+model JawabanTerbuka {
+  id        String  @id @default(cuid())
+  responsId String  @unique
+  respons   Respons @relation(fields: [responsId], references: [id], onDelete: Cascade)
+  q21       String? @db.Text
+  q22       String? @db.Text
+  q23       String? @db.Text
+  q24       String? @db.Text
+  q25       String? @db.Text
+}
+
+// ── Temuan & RTL ────────────────────────────────────────────
+
+model Temuan {
+  id          String   @id @default(cuid())
+  periodeId   String
+  periode     PeriodeMonev @relation(fields: [periodeId], references: [id])
+  unit        String?
+  temuan      String   @db.Text
+  bukti       String?  @db.Text
+  kategori    String // Mayor | Minor | Observasi
+  akarMasalah String?  @db.Text
+  rekomendasi String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  rtl         RTL[]
+
+  @@index([periodeId])
+}
+
+model RTL {
+  id                    String   @id @default(cuid())
+  temuanId              String
+  temuan                Temuan   @relation(fields: [temuanId], references: [id], onDelete: Cascade)
+  programPerbaikan      String   @db.Text
+  pic                   String
+  tglMulai              DateTime? @db.Date
+  tglSelesai            DateTime? @db.Date
+  indikatorKeberhasilan String?  @db.Text
+  status                String   @default("Belum") // Belum | Proses | Selesai | Tertunda
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([temuanId])
+}
+
+model BeritaAcara {
+  id          String   @id @default(cuid())
+  periodeId   String
+  periode     PeriodeMonev @relation(fields: [periodeId], references: [id])
+  fakultas    String?
+  prodi       String?
+  tanggalBA   DateTime @db.Date
+  nilai       Float?
+  kategori    String?
+  temuanUtama Json?
+  rekomendasi Json?
+  createdAt   DateTime @default(now())
+
+  @@index([periodeId])
+}
+
+// ── Admin & Audit ───────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  nama      String
+  role      String // SUPER_ADMIN | ADMIN_MONEV
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  aksi      String
+  target    String?
+  detail    Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

@@ -1,0 +1,35 @@
+# Deps
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build
+client/dist/
+server/dist/
+dist/
+dist-ssr/
+*.local
+
+# Env — jangan commit secret
+.env
+server/.env
+*.env.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+server/server.log
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.sw?
+
+# Tool cache
+.playwright-mcp/
+.claude/

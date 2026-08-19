@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monev Angket - Monitoring & Evaluasi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        // Safe Tailwind Config Loader
+        function configureTailwind() {
+            if (typeof tailwind !== 'undefined') {
+                tailwind.config = {
+                    darkMode: 'class',
+                    theme: {
+                        extend: {
+                            fontFamily: {
+                                sans: ['Inter', 'sans-serif'],
+                            },
+                            colors: {
+                                brand: {
+                                    50: '#eef2ff',
+                                    100: '#e0e7ff',
+                                    500: '#6366f1',
+                                    600: '#4f46e5',
+                                    700: '#4338ca',
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                setTimeout(configureTailwind, 50);
+            }
+        }
+        configureTailwind();
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            /* Enhanced prominent dot pattern with subtle multi-layer gradients */
+            background-image: 
+                radial-gradient(rgba(99, 102, 241, 0.25) 2px, transparent 2px), 
+                radial-gradient(rgba(148, 163, 184, 0.2) 1.5px, #f8fafc 1.5px);
+            background-size: 28px 28px;
+            background-position: 0 0, 14px 14px;
+        }
+        /* Custom Smooth Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="h-full text-slate-900 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app" class="min-h-full flex flex-col">
+
+        <!-- ================= PAGE 1: LOGIN PAGE ================= -->
+        <div id="page-login" class="flex-1 flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 via-indigo-50/30 to-slate-100">
+            <div class="w-full max-w-md bg-white rounded-[2rem] shadow-xl shadow-slate-200/60 border border-slate-100 p-8 sm:p-10 transition-all">
+                
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 mx-auto bg-indigo-600 text-white rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg shadow-indigo-200 mb-4">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h1 class="text-2xl font-extrabold text-slate-900">Monev Angket</h1>
+                    <p class="text-slate-500 text-sm mt-1">Sistem Informasi Monitoring & Evaluasi Sekolah</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Pilih Peran Anda</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="role" value="user" checked class="peer sr-only">
+                                <div class="text-center p-3.5 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 peer-checked:text-indigo-700 transition-all font-semibold text-sm">
+                                    <i class="fas fa-user-pen mb-1 block text-lg"></i> Responden
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="role" value="admin" class="peer sr-only">
+                                <div class="text-center p-3.5 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 peer-checked:text-indigo-700 transition-all font-semibold text-sm">
+                                    <i class="fas fa-user-shield mb-1 block text-lg"></i> Admin / Guru
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">ID / Email Pengguna</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <input type="text" id="login-id" required placeholder="Masukkan nama atau ID..." class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2">
+                        <span>Masuk ke Sistem</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+                    <p class="text-xs text-slate-400">Butuh bantuan akses? Hubungi tim IT sekolah Anda.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: RESPONDEN FORM PAGE ================= -->
+        <div id="page-user-form" class="hidden flex-1 flex flex-col bg-slate-50">
+            <!-- Header Nav -->
+            <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-20 shadow-xs">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center font-bold">
+                        <i class="fas fa-pen"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-slate-800 text-sm sm:text-base">Pengisian Angket Evaluasi</h2>
+                        <p class="text-xs text-slate-500">Masuk sebagai: <span id="display-user-name" class="font-semibold text-indigo-600">Siswa</span></p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold transition-all flex items-center gap-2">
+                    <i class="fas fa-right-from-bracket"></i> Keluar
+                </button>
+            </header>
+
+            <!-- Main Form Container -->
+            <main class="flex-1 max-w-3xl w-full mx-auto p-4 sm:p-8">
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 p-6 sm:p-8 mb-8">
+                    <div class="text-center max-w-lg mx-auto mb-8">
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-900">Formulir Kepuasan Pembelajaran</h3>
+                        <p class="text-slate-500 text-sm mt-1">Silakan berikan penilaian yang objektif terhadap instrumen di bawah ini.</p>
+                    </div>
+
+                    <form id="angketForm" onsubmit="submitAngket(event)" class="space-y-6">
+                        <!-- Identitas tambahan -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-6 border-b border-slate-100">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Pilih Angket</label>
+                                <select id="form-survey-target" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white text-sm font-medium">
+                                    <option value="Evaluasi Pembelajaran Semester Ganjil">Evaluasi Pembelajaran Semester Ganjil</option>
+                                    <option value="Survei Kepuasan Fasilitas Perpustakaan">Survei Kepuasan Fasilitas Perpustakaan</option>
+                                    <option value="Angket Minat Bakat Ekstrakurikuler">Angket Minat Bakat Ekstrakurikuler</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Kelas / Unit</label>
+                                <input type="text" id="form-group" required placeholder="Contoh: XII IPA 1" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white text-sm font-medium">
+                            </div>
+                        </div>
+
+                        <!-- Daftar Pertanyaan Dinamis -->
+                        <div id="questions-container" class="space-y-6">
+                            <!-- Diisi via script -->
+                        </div>
+
+                        <!-- Saran -->
+                        <div class="pt-4">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Saran / Masukan Tambahan (Opsional)</label>
+                            <textarea id="form-saran" rows="3" placeholder="Tuliskan saran Anda di sini..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white text-sm font-medium"></textarea>
+                        </div>
+
+                        <!-- Tombol Submit -->
+                        <button type="submit" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 text-base transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Kirim Jawaban Sekarang
+                        </button>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+        <!-- ================= PAGE 3: ADMIN RECAPITULATION DASHBOARD ================= -->
+        <div id="page-admin-dashboard" class="hidden flex-1 flex bg-slate-50 relative overflow-hidden">
+            
+            <!-- ADMIN SIDEBAR -->
+            <aside id="admin-sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col z-30 transition-all duration-300 -translate-x-full lg:translate-x-0 absolute lg:relative h-full shadow-lg lg:shadow-none">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold shadow-md shadow-indigo-200">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-sm">Monev Admin</h3>
+                            <p class="text-[10px] text-slate-400">Control Center</p>
+                        </div>
+                    </div>
+                    <!-- Close button for mobile sidebar -->
+                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-600 p-2">
+                        <i class="fas fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Sidebar Nav Links -->
+                <div class="flex-1 py-6 px-4 space-y-1.5 overflow-y-auto">
+                    <button onclick="switchAdminTab('dashboard')" id="nav-dash" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs bg-indigo-50 text-indigo-700 transition-all">
+                        <i class="fas fa-house-chimney w-5 text-center"></i> Ringkasan Eksekutif
+                    </button>
+                    <button onclick="switchAdminTab('recap')" id="nav-recap" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fas fa-table-list w-5 text-center"></i> Tabel Rekapitulasi
+                    </button>
+                    <button onclick="switchAdminTab('surveys')" id="nav-surveys" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fas fa-folder-open w-5 text-center"></i> Kelola Daftar Angket
+                    </button>
+                    <button onclick="switchAdminTab('settings')" id="nav-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fas fa-gear w-5 text-center"></i> Pengaturan Sistem
+                    </button>
+                </div>
+
+                <!-- Sidebar Footer User Profile -->
+                <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                    <div class="flex items-center gap-3 truncate">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs shrink-0">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="truncate">
+                            <p class="text-xs font-bold text-slate-800 truncate" id="admin-sidebar-name">Administrator</p>
+                            <p class="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> Online
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="logout()" title="Keluar" class="text-slate-400 hover:text-rose-600 p-2 transition-colors">
+                        <i class="fas fa-right-from-bracket text-sm"></i>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- MAIN ADMIN CONTENT AREA -->
+            <div class="flex-1 flex flex-col h-full overflow-y-auto">
+                <!-- Header Nav -->
+                <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-20 shadow-xs">
+                    <div class="flex items-center gap-3">
+                        <!-- Hamburger toggle for mobile sidebar -->
+                        <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-200 transition-colors">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div>
+                            <h2 class="font-extrabold text-slate-800 text-sm sm:text-base" id="admin-page-title">Ringkasan Eksekutif</h2>
+                            <p class="text-[11px] text-slate-400">Monitoring real-time hasil isian angket responden.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="switchView('user-form')" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
+                            <i class="fas fa-plus"></i> <span class="hidden sm:inline">Isi Form Angket</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Dynamic Content Container -->
+                <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-6">
+                    
+                    <!-- TAB 1: DASHBOARD / RINGKASAN EKSEKUTIF -->
+                    <div id="admin-tab-dashboard" class="space-y-6">
+                        <!-- Stat Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
+                                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl font-bold">
+                                    <i class="fas fa-file-lines"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Angket</p>
+                                    <h3 class="text-2xl font-black text-slate-800 mt-1" id="stat-total-angket">3</h3>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
+                                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl font-bold">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Responden</p>
+                                    <h3 class="text-2xl font-black text-slate-800 mt-1" id="stat-total-responden">0</h3>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
+                                <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl font-bold">
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Rata-rata Skor</p>
+                                    <h3 class="text-2xl font-black text-slate-800 mt-1" id="stat-avg-score">0.0 / 4.0</h3>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
+                                <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl font-bold">
+                                    <i class="fas fa-circle-check"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Status Sistem</p>
+                                    <h3 class="text-base font-bold text-emerald-600 mt-1">Aktif & Normal</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+                                <h4 class="font-bold text-slate-800 text-base mb-4">Distribusi Penilaian Global</h4>
+                                <div class="relative flex-1 min-h-[260px] flex items-center justify-center">
+                                    <canvas id="distributionChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+                                <h4 class="font-bold text-slate-800 text-base mb-4">Rata-rata Penilaian per Pertanyaan</h4>
+                                <div class="relative flex-1 min-h-[260px]">
+                                    <canvas id="aspectChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: TABEL REKAPITULASI -->
+                    <div id="admin-tab-recap" class="hidden space-y-6">
+                        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-lg">Rekapitulasi Respon Responden</h3>
+                                    <p class="text-slate-500 text-xs">Seluruh riwayat pengisian instrumen angket.</p>
+                                </div>
+                                <div class="relative w-full sm:w-72">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" id="search-table" oninput="filterTable(this.value)" placeholder="Cari nama atau kelas..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:bg-white text-xs font-medium">
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-400 text-[11px] font-bold uppercase tracking-wider border-b border-slate-100">
+                                            <th class="py-4 px-6">Responden</th>
+                                            <th class="py-4 px-6">Kelas / Unit</th>
+                                            <th class="py-4 px-6">Judul Angket</th>
+                                            <th class="py-4 px-6">Skor Rata-rata</th>
+                                            <th class="py-4 px-6">Waktu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recap-table-body" class="text-xs sm:text-sm text-slate-600 divide-y divide-slate-100">
+                                        <!-- Data injected via script -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: KELOLA DAFTAR ANGKET -->
+                    <div id="admin-tab-surveys" class="hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-lg">Daftar Kuesioner Aktif</h3>
+                                    <p class="text-slate-500 text-xs">Daftar angket yang tersedia untuk diisi oleh responden.</p>
+                                </div>
+                                <button onclick="showToast('Fitur', 'Modul tambah angket baru aktif.', 'info')" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-md shadow-indigo-200 transition-all">
+                                    <i class="fas fa-plus mr-1"></i> Buat Angket Baru
+                                </button>
+                            </div>
+                            <div class="space-y-3" id="admin-survey-list-container">
+                                <div class="p-4 border border-slate-200 rounded-2xl flex justify-between items-center bg-slate-50">
+                                    <div>
+                                        <h4 class="font-bold text-slate-800 text-sm">Evaluasi Pembelajaran Semester Ganjil</h4>
+                                        <p class="text-xs text-slate-500 mt-0.5">5 Pertanyaan • Kategori Akademik</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-bold border border-emerald-200">Aktif</span>
+                                </div>
+                                <div class="p-4 border border-slate-200 rounded-2xl flex justify-between items-center bg-slate-50">
+                                    <div>
+                                        <h4 class="font-bold text-slate-800 text-sm">Survei Kepuasan Fasilitas Perpustakaan</h4>
+                                        <p class="text-xs text-slate-500 mt-0.5">5 Pertanyaan • Kategori Fasilitas</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-bold border border-emerald-200">Aktif</span>
+                                </div>
+                                <div class="p-4 border border-slate-200 rounded-2xl flex justify-between items-center bg-slate-50">
+                                    <div>
+                                        <h4 class="font-bold text-slate-800 text-sm">Angket Minat Bakat Ekstrakurikuler</h4>
+                                        <p class="text-xs text-slate-500 mt-0.5">5 Pertanyaan • Kategori Non-Akademik</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-bold border border-emerald-200">Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: PENGATURAN -->
+                    <div id="admin-tab-settings" class="hidden space-y-6">
+                        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm max-w-2xl">
+                            <h3 class="font-bold text-slate-800 text-lg mb-2">Konfigurasi Sistem Monitoring</h3>
+                            <p class="text-slate-500 text-xs mb-6">Sesuaikan preferensi umum aplikasi Monev Angket.</p>
+                            <form onsubmit="event.preventDefault(); showToast('Berhasil', 'Pengaturan tersimpan.', 'success');" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Nama Instansi / Sekolah</label>
+                                    <input type="text" value="SMA / SMK Unggulan Nusantara" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Email Administrator Utama</label>
+                                    <input type="email" value="admin@monevangket.sch.id" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium">
+                                </div>
+                                <div class="pt-2">
+                                    <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-md shadow-indigo-200 transition-all">
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- IN-MEMORY DATA STORAGE ---
+        let currentUser = null;
+        
+        let responses = [
+            { id: 1, name: 'Budi Santoso', group: 'XII IPA 1', survey: 'Evaluasi Pembelajaran Semester Ganjil', score: '3.8', date: 'Hari ini, 10:20' },
+            { id: 2, name: 'Siti Aminah', group: 'XI IPS 2', survey: 'Survei Kepuasan Fasilitas Perpustakaan', score: '4.0', date: 'Hari ini, 09:15' },
+            { id: 3, name: 'Andi Pratama', group: 'X IPA 3', survey: 'Evaluasi Pembelajaran Semester Ganjil', score: '3.2', date: 'Kemarin, 14:05' }
+        ];
+
+        const questionsList = [
+            "Materi atau instruksi yang diberikan jelas dan mudah dipahami.",
+            "Fasilitas dan lingkungan mendukung berjalannya kegiatan dengan nyaman.",
+            "Sikap dan pelayanan pihak terkait (fasilitator/panitia/guru) sangat baik.",
+            "Kegiatan berjalan sesuai dengan waktu dan jadwal yang telah ditentukan.",
+            "Secara keseluruhan, saya merasa puas dengan pelaksanaan kegiatan ini."
+        ];
+
+        let distChartInstance = null;
+        let aspectChartInstance = null;
+
+        // --- INIT APP ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFormQuestions();
+        });
+
+        // --- TOGGLE SIDEBAR MOBILE ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('admin-sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // --- SWITCH ADMIN TABS ---
+        function switchAdminTab(tabName) {
+            // Hide all tabs
+            document.getElementById('admin-tab-dashboard').classList.add('hidden');
+            document.getElementById('admin-tab-recap').classList.add('hidden');
+            document.getElementById('admin-tab-surveys').classList.add('hidden');
+            document.getElementById('admin-tab-settings').classList.add('hidden');
+
+            // Reset nav styles
+            const navs = ['nav-dash', 'nav-recap', 'nav-surveys', 'nav-settings'];
+            navs.forEach(id => {
+                const btn = document.getElementById(id);
+                btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all";
+            });
+
+            // Active specific tab
+            const titles = {
+                dashboard: 'Ringkasan Eksekutif',
+                recap: 'Tabel Rekapitulasi Isian',
+                surveys: 'Kelola Daftar Angket',
+                settings: 'Pengaturan Sistem'
+            };
+
+            document.getElementById('admin-page-title').textContent = titles[tabName];
+            document.getElementById(`admin-tab-${tabName}`).classList.remove('hidden');
+
+            const activeBtnMap = { dashboard: 'nav-dash', recap: 'nav-recap', surveys: 'nav-surveys', settings: 'nav-settings' };
+            const activeBtn = document.getElementById(activeBtnMap[tabName]);
+            activeBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs bg-indigo-50 text-indigo-700 transition-all";
+
+            // Close mobile sidebar if open
+            const sidebar = document.getElementById('admin-sidebar');
+            if (window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+
+            // Render charts if dashboard opened
+            if (tabName === 'dashboard') {
+                setTimeout(renderCharts, 50);
+            }
+        }
+
+        // --- LOGIN HANDLER ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const roleInput = document.querySelector('input[name="role"]:checked').value;
+            const nameId = document.getElementById('login-id').value.trim();
+
+            if (!nameId) return;
+
+            currentUser = {
+                role: roleInput,
+                name: nameId
+            };
+
+            if (roleInput === 'user') {
+                document.getElementById('display-user-name').textContent = currentUser.name;
+                switchView('user-form');
+                showToast('Berhasil Masuk', `Selamat datang, ${currentUser.name}! Silakan isi angket.`, 'success');
+            } else {
+                document.getElementById('admin-sidebar-name').textContent = currentUser.name;
+                switchView('admin-dashboard');
+                renderAdminDashboard();
+                showToast('Login Admin', `Masuk sebagai Admin: ${currentUser.name}`, 'success');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('login-id').value = '';
+            switchView('login');
+            showToast('Keluar', 'Anda telah keluar dari sesi.', 'info');
+        }
+
+        // --- VIEW SWITCHER ---
+        function switchView(viewName) {
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-user-form').classList.add('hidden');
+            document.getElementById('page-admin-dashboard').classList.add('hidden');
+
+            if (viewName === 'login') {
+                document.getElementById('page-login').classList.remove('hidden');
+            } else if (viewName === 'user-form') {
+                document.getElementById('page-user-form').classList.remove('hidden');
+            } else if (viewName === 'admin-dashboard') {
+                document.getElementById('page-admin-dashboard').classList.remove('hidden');
+                switchAdminTab('dashboard');
+                renderAdminDashboard();
+            }
+        }
+
+        // --- RENDER FORM QUESTIONS ---
+        function renderFormQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questionsList.forEach((q, idx) => {
+                const html = `
+                    <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+                        <p class="font-bold text-slate-800 text-sm sm:text-base mb-3"><span class="text-indigo-600 mr-2">Q${idx + 1}.</span>${q}</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="q${idx}" value="4" required class="peer sr-only">
+                                <div class="text-center p-3 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 font-semibold text-xs transition-all">
+                                    <div class="text-lg font-bold">4</div> Sangat Baik
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="q${idx}" value="3" class="peer sr-only">
+                                <div class="text-center p-3 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 font-semibold text-xs transition-all">
+                                    <div class="text-lg font-bold">3</div> Baik
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="q${idx}" value="2" class="peer sr-only">
+                                <div class="text-center p-3 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-checked:text-amber-700 font-semibold text-xs transition-all">
+                                    <div class="text-lg font-bold">2</div> Cukup
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="q${idx}" value="1" class="peer sr-only">
+                                <div class="text-center p-3 rounded-xl border-2 border-slate-200 bg-white peer-checked:border-rose-500 peer-checked:bg-rose-50 peer-checked:text-rose-700 font-semibold text-xs transition-all">
+                                    <div class="text-lg font-bold">1</div> Kurang
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // --- SUBMIT ANGKET ---
+        function submitAngket(e) {
+            e.preventDefault();
+            const surveyTitle = document.getElementById('form-survey-target').value;
+            const groupName = document.getElementById('form-group').value;
+
+            let totalScore = 0;
+            for (let i = 0; i < questionsList.length; i++) {
+                const checked = document.querySelector(`input[name="q${i}"]:checked`);
+                if (checked) totalScore += parseInt(checked.value);
+            }
+
+            const avg = (totalScore / questionsList.length).toFixed(1);
+
+            // Simpan ke array
+            responses.unshift({
+                id: Date.now(),
+                name: currentUser ? currentUser.name : 'Responden',
+                group: groupName,
+                survey: surveyTitle,
+                score: avg,
+                date: 'Baru Saja'
+            });
+
+            document.getElementById('angketForm').reset();
+            renderFormQuestions();
+
+            showToast('Berhasil Dikirim!', 'Tanggapan angket Anda telah terekam dalam sistem.', 'success');
+        }
+
+        // --- ADMIN DASHBOARD RENDER ---
+        function renderAdminDashboard() {
+            document.getElementById('stat-total-responden').textContent = responses.length;
+
+            let sum = 0;
+            responses.forEach(r => sum += parseFloat(r.score));
+            const globalAvg = responses.length > 0 ? (sum / responses.length).toFixed(1) : '0.0';
+            document.getElementById('stat-avg-score').textContent = globalAvg + ' / 4.0';
+
+            renderTable(responses);
+            renderCharts();
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('recap-table-body');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">Belum ada data respons angket.</td></tr>`;
+                return;
+            }
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-4 px-6 font-semibold text-slate-800 flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs shrink-0">
+                            ${item.name.charAt(0).toUpperCase()}
+                        </div>
+                        <span class="truncate">${item.name}</span>
+                    </td>
+                    <td class="py-4 px-6 text-slate-600">${item.group}</td>
+                    <td class="py-4 px-6 text-slate-600 font-medium">${item.survey}</td>
+                    <td class="py-4 px-6">
+                        <span class="px-3 py-1 bg-emerald-50 text-emerald-700 font-bold rounded-lg text-xs border border-emerald-200">
+                            ${item.score} / 4.0
+                        </span>
+                    </td>
+                    <td class="py-4 px-6 text-slate-400 text-xs">${item.date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterTable(keyword) {
+            const filtered = responses.filter(r => 
+                r.name.toLowerCase().includes(keyword.toLowerCase()) || 
+                r.group.toLowerCase().includes(keyword.toLowerCase()) ||
+                r.survey.toLowerCase().includes(keyword.toLowerCase())
+            );
+            renderTable(filtered);
+        }
+
+        // --- RENDER CHARTS ---
+        function renderCharts() {
+            if (distChartInstance) distChartInstance.destroy();
+            if (aspectChartInstance) aspectChartInstance.destroy();
+
+            const ctx1 = document.getElementById('distributionChart');
+            if (ctx1) {
+                distChartInstance = new Chart(ctx1.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Sangat Baik (4)', 'Baik (3)', 'Cukup (2)', 'Kurang (1)'],
+                        datasets: [{
+                            data: [65, 25, 8, 2],
+                            backgroundColor: ['#10b981', '#6366f1', '#f59e0b', '#f43f5e'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { boxWidth: 12, font: { family: 'Inter', size: 11 } }
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+            }
+
+            const ctx2 = document.getElementById('aspectChart');
+            if (ctx2) {
+                aspectChartInstance = new Chart(ctx2.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1: Materi', 'Q2: Fasilitas', 'Q3: Pelayanan', 'Q4: Waktu', 'Q5: Kepuasan'],
+                        datasets: [{
+                            label: 'Skor Rata-rata',
+                            data: [3.8, 3.5, 3.9, 3.6, 3.7],
+                            backgroundColor: '#6366f1',
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 4,
+                                grid: { color: '#f1f5f9' }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+        }
+
+        // --- TOAST NOTIFICATION ---
+        function showToast(title, message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const bgColors = {
+                success: 'bg-emerald-50 border-emerald-200 text-emerald-900',
+                info: 'bg-indigo-50 border-indigo-200 text-indigo-900',
+                error: 'bg-rose-50 border-rose-200 text-rose-900'
+            };
+
+            const icons = {
+                success: 'fa-check-circle text-emerald-500',
+                info: 'fa-info-circle text-indigo-500',
+                error: 'fa-triangle-exclamation text-rose-500'
+            };
+
+            toast.className = `pointer-events-auto flex items-start gap-3 p-4 rounded-2xl border shadow-xl ${bgColors[type]} transition-all duration-300 transform translate-x-10 opacity-0 max-w-sm w-full`;
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} text-lg mt-0.5"></i>
+                <div class="flex-1">
+                    <h5 class="font-bold text-xs uppercase tracking-wider">${title}</h5>
+                    <p class="text-xs mt-0.5 opacity-90">${message}</p>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-10', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-x-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
