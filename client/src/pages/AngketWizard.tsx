@@ -547,16 +547,16 @@ export default function AngketWizard() {
           const canNext = step === 0 ? isIdentitasDone : isDimStep ? curDimComplete : true;
           const nextTitle = !canNext ? (step === 0 ? "Lengkapi identitas & periode terlebih dahulu" : `Lengkapi ${unansweredCount} pertanyaan lagi di dimensi ini`) : undefined;
           return (
-            <div className="flex justify-between items-center mt-8">
-              <button type="button" onClick={() => (step === 0 ? navigate("/") : setStep((s) => s - 1))}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all border ${step === 0 ? "text-slate-400 bg-white border-slate-200 hover:bg-slate-50" : "text-slate-600 bg-white border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm"}`}>
+            <div className="flex justify-between items-center gap-3 mt-6 sm:mt-8">
+              <button type="button" onClick={() => (step === 0 ? navigate("/") : setStep((s) => s - 1))} aria-label={step === 0 ? "Beranda" : "Sebelumnya"}
+                className="shrink-0 w-10 h-10 sm:w-11 sm:h-11 grid place-items-center rounded-xl border bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700 hover:border-slate-300 transition-colors shadow-sm">
                 <ChevronLeft size={20} />
-                <span>{step === 0 ? "Beranda" : "Sebelumnya"}</span>
               </button>
               {step < dims.length + 2 ? (
                 <button type="button" onClick={handleNext} disabled={!canNext} title={nextTitle} aria-disabled={!canNext}
-                  className={`flex items-center gap-2 px-8 py-3 rounded-xl font-semibold transition-all shadow-md ${canNext ? "bg-slate-900 hover:bg-slate-800 text-white" : "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none border border-slate-200"}`}>
-                  <span>{step === 0 ? "Lanjut ke Penilaian" : isPenilaian && step < dims.length ? `Lanjut ke ${dims[step] ?? "berikutnya"}` : step === dims.length ? "Lanjut ke Terbuka" : "Lanjut ke Review"}</span>
+                  className={`flex-1 sm:flex-none flex items-center justify-center gap-2 py-3.5 sm:py-3 px-6 sm:px-8 rounded-xl font-semibold transition-all shadow-md text-[15px] sm:text-base ${canNext ? "bg-slate-900 hover:bg-slate-800 text-white" : "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none border border-slate-200"}`}>
+                  <span className="sm:hidden">{step === 0 ? "Lanjut" : "Lanjut"}</span>
+                  <span className="hidden sm:inline">{step === 0 ? "Lanjut ke Penilaian" : isPenilaian && step < dims.length ? `Lanjut ke ${dims[step] ?? "berikutnya"}` : step === dims.length ? "Lanjut ke Terbuka" : "Lanjut ke Review"}</span>
                   <ChevronRight size={20} />
                 </button>
               ) : <span className="text-xs text-slate-400 hidden sm:inline">Periksa lalu Kirim Survei di atas</span>}
