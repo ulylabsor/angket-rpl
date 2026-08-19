@@ -15,6 +15,69 @@ const RATING_STYLE: Record<number, { selBorder: string; selBg: string; selNum: s
   4: { selBorder: "border-emerald-500", selBg: "bg-emerald-50", selNum: "text-emerald-700", selLabel: "text-emerald-800", selCheck: "text-emerald-600", hover: "hover:border-emerald-300 hover:bg-emerald-50/50", hoverNum: "group-hover:text-emerald-500" },
 };
 
+const UNIT_UIN = "UIN Raden Fatah Palembang";
+
+const JABATAN_UNIV = [
+  "Rektor",
+  "Wakil Rektor 1",
+  "Ketua Pengelola RPL Universitas",
+  "Sekretaris Pengelola RPL Universitas",
+];
+
+const JABATAN_FAK = [
+  "Direktur Pascasarjana",
+  "Wakil Direktur Pascasarjana",
+  "Dekan",
+  "Wakil Dekan 1 - Bidang Akademik dan Kelembagaan",
+  "Ketua Program Studi",
+];
+
+const JABATAN_LPM = [
+  "Ketua LPM",
+  "Sekretaris LPM",
+  "Kepala Pusat Kurikulum dan Pembelajaran",
+  "Kapus Pengembangan Standar Mutu",
+  "Kapus Audit dan Pengendalian Mutu Akademik",
+  "Kapus Career Development Center",
+  "Kapus Perangkingan dan Internasionalisasi",
+];
+
+// Distinct jabatan Tim Asesor dari Lampiran II SK Rektor 1699/2025 (Ket. Tim Asesor RPL)
+const JABATAN_ASESOR = [
+  "Ketua GPMF",
+  "Auditor Internal",
+  "Kepala Laboratorium Terpadu",
+  "Kepala Laboratorium",
+  "Praktisi Badan Standar Nasional",
+  "Praktisi PCR",
+  "Praktisi BBLK",
+  "Praktisi Hukum",
+  "Praktisi Penyiaran",
+  "Praktisi Akuntan",
+  "Praktisi Baznas",
+  "Praktisi Wakaf",
+  "Praktisi Pendidikan",
+  "Praktisi Psikolog",
+  "Praktisi Agama",
+  "Praktisi QA",
+  "Praktisi Budayawan",
+  "Praktisi Humaniora - MSI",
+];
+
+const JABATAN_SEK = ["Sekretaris Prodi", "Staf Administrasi"];
+
+function jabatanOptionsFor(kode: string): string[] | null {
+  switch (kode) {
+    case "UNIV": return JABATAN_UNIV;
+    case "FAK": return JABATAN_FAK;
+    case "LPM": return JABATAN_LPM;
+    case "ASESOR": return JABATAN_ASESOR;
+    case "SEK": return JABATAN_SEK;
+    case "MHS": return null; // auto Mahasiswa
+    default: return null;
+  }
+}
+
 export default function AngketWizard() {
   const { kode } = useParams();
   const [sp] = useSearchParams();
@@ -25,7 +88,7 @@ export default function AngketWizard() {
   const [fakultasList, setFakultasList] = useState<any[]>([]);
   const [periodeInfo, setPeriodeInfo] = useState<PeriodeInfo | null>(null);
   const [periodeErr, setPeriodeErr] = useState(false);
-  const [identitas, setIdentitas] = useState({ nama: "", jabatan: "", unit: "", fakultas: "", prodi: "" });
+  const [identitas, setIdentitas] = useState({ nama: "", jabatan: "", unit: UNIT_UIN, fakultas: "", prodi: "", kewarganegaraan: "WNI" as "WNI" | "WNA", negara: "" });
   const [skor, setSkor] = useState<Record<string, number>>({});
   const [terbuka, setTerbuka] = useState({ q21: "", q22: "", q23: "", q24: "", q25: "" });
   const [step, setStep] = useState(0);
@@ -35,13 +98,35 @@ export default function AngketWizard() {
   const [validationError, setValidationError] = useState("");
 
   const K = (kode ?? "").toUpperCase();
-  const needProdi = K === "FAK" || K === "MHS";
-  const RESPONDEN: Record<string, string> = { UNIV: "Rektor · Warek 1 · Ketua & Sekretaris Pengelola RPL Univ", FAK: "Direktur & Wadir Pascasarjana · Dekan & Wadek 1 · Kaprodi", LPM: "Tim LPM", ASESOR: "Tim Asesor RPL (Asesor 1 & 2)", SEK: "Sekretaris Prodi & Staf Administrasi", MHS: "Mahasiswa / Pemohon RPL (boleh inisial)" };
+  const needFakProdi = K === "FAK" || K === "SEK" || K === "MHS";
+  const isAsesor = K === "ASESOR";
+  const unitFixed = K === "UNIV" || K === "FAK" || K === "LPM";
+  const showUnit = unitFixed || isAsesor;
+  const isMHS = K === "MHS";
+  const jabatanOpts = jabatanOptionsFor(K);
+  const RESPONDEN: Record<string, string> = { UNIV: "Rektor · Warek 1 · Ketua & Sekretaris Pengelola RPL Univ", FAK: "Direktur & Wadir Pascasarjana · Dekan & Wadek 1 · Kaprodi", LPM: "Tim LPM", ASESOR: "Tim Asesor RPL", SEK: "Sekretaris Prodi & Staf Administrasi", MHS: "Mahasiswa / Pemohon RPL" };
 
   useEffect(() => {
     if (!K) return;
     apiFetch<AngketDetail>(`/angket/${K}`).then(setDetail).catch((e) => setErr(String(e)));
-    if (needProdi) apiFetch<any[]>("/master/fakultas").then(setFakultasList).catch(() => {});
+    if (needFakProdi || K === "ASESOR") apiFetch<any[]>("/master/fakultas").then(setFakultasList).catch(() => {});
+  }, [K]);
+
+  // auto-default per template: unit fixed untuk UNIV/FAK/LPM, selectable untuk ASESOR, jabatan Mahasiswa untuk MHS
+  useEffect(() => {
+    if (!K) return;
+    const isAsesorLocal = K === "ASESOR";
+    const unitFixedLocal = K === "UNIV" || K === "FAK" || K === "LPM";
+    setIdentitas((prev) => {
+      let next = { ...prev };
+      if (unitFixedLocal) next.unit = UNIT_UIN;
+      else if (isAsesorLocal) { if (prev.unit === UNIT_UIN) next.unit = ""; }
+      else next.unit = "";
+      if (K === "MHS") next.jabatan = "Mahasiswa";
+      else if (prev.jabatan === "Mahasiswa" && K !== "MHS") next.jabatan = "";
+      if (K !== "MHS") { next.kewarganegaraan = "WNI"; next.negara = ""; }
+      return next;
+    });
   }, [K]);
 
   useEffect(() => {
@@ -59,11 +144,17 @@ export default function AngketWizard() {
   const currentDimButir = step >= 1 && step <= dims.length ? (detail?.grouped[dims[step - 1]] ?? []) : [];
 
   const isIdentitasDone = useMemo(() => {
-    if (!identitas.nama.trim() || !identitas.jabatan.trim() || !identitas.unit.trim()) return false;
-    if (needProdi && (!identitas.fakultas.trim() || !identitas.prodi.trim())) return false;
+    if (!identitas.nama.trim()) return false;
+    if (!identitas.jabatan.trim()) return false;
+    if (showUnit && !identitas.unit.trim()) return false;
+    if (needFakProdi && (!identitas.fakultas.trim() || !identitas.prodi.trim())) return false;
+    if (isMHS) {
+      if (!identitas.kewarganegaraan) return false;
+      if (identitas.kewarganegaraan === "WNA" && !identitas.negara.trim()) return false;
+    }
     if (!periodeId) return false;
     return true;
-  }, [identitas, needProdi, periodeId]);
+  }, [identitas, needFakProdi, showUnit, isMHS, periodeId]);
   const dimDone = (dim: string) => (detail?.grouped[dim] ?? []).every((b) => skor[b.id] >= 1 && skor[b.id] <= 4);
 
   const handleOptionSelect = (butirId: string, value: number) => {
@@ -73,7 +164,8 @@ export default function AngketWizard() {
 
   const handleNext = () => {
     if (step === 0 && !isIdentitasDone) {
-      setValidationError("Lengkapi identitas (dan periode) sebelum melanjutkan.");
+      if (isMHS && identitas.kewarganegaraan === "WNA" && !identitas.negara.trim()) setValidationError("Lengkapi identitas: asal negara wajib untuk WNA.");
+      else setValidationError("Lengkapi identitas (dan periode) sebelum melanjutkan.");
       return;
     }
     if (step >= 1 && step <= dims.length) {
@@ -93,11 +185,23 @@ export default function AngketWizard() {
     try {
       const jawabanSkala = detail.butir.map((b) => ({ butirId: b.id, skor: skor[b.id] }));
       if (jawabanSkala.some((j) => !j.skor)) throw new Error("Lengkapi semua pernyataan skala.");
+      const identitasPayload: any = {
+        nama: identitas.nama,
+        jabatan: identitas.jabatan,
+        unit: unitFixed ? UNIT_UIN : isAsesor ? identitas.unit : null,
+        fakultas: needFakProdi ? identitas.fakultas : null,
+        prodi: needFakProdi ? identitas.prodi : null,
+      };
+      if (isMHS) {
+        identitasPayload.kewarganegaraan = identitas.kewarganegaraan;
+        identitasPayload.negara = identitas.kewarganegaraan === "WNA" ? identitas.negara : null;
+        identitasPayload.asalNegara = identitas.kewarganegaraan === "WNA" ? identitas.negara : null;
+      }
       const res: any = await apiFetch("/respons", {
         method: "POST",
         body: JSON.stringify({
           periodeId, templateKode: K,
-          identitas: { nama: identitas.nama, jabatan: identitas.jabatan, unit: identitas.unit, fakultas: identitas.fakultas || null, prodi: identitas.prodi || null },
+          identitas: identitasPayload,
           jawabanSkala, jawabanTerbuka: terbuka,
         }),
       });
@@ -110,7 +214,7 @@ export default function AngketWizard() {
     localStorage.setItem(key, JSON.stringify({ identitas, skor, terbuka, step }));
   }, [K, periodeId, identitas, skor, terbuka, step]);
 
-  if (!detail) return <div className="min-h-screen bg-slate-50/50 grid place-items-center p-8 text-sm text-slate-600">{err ? <span className="text-red-600">{err}</span> : "Memuat angket..."}</div>;
+  if (!detail) return <div className="page-pattern min-h-screen grid place-items-center p-8 text-sm text-slate-600">{err ? <span className="text-red-600">{err}</span> : "Memuat angket..."}</div>;
 
   const selectedFak = fakultasList.find((f) => f.nama === identitas.fakultas);
   const prodiOpts: string[] = selectedFak ? selectedFak.prodi.map((p: any) => p.nama) : [];
@@ -119,7 +223,7 @@ export default function AngketWizard() {
 
   // SurveyFlow-style renderSurvey: per-step progress + header + questions
   return (
-    <div className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="page-pattern min-h-screen font-sans text-slate-800 flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
       {/* Public header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
@@ -156,7 +260,7 @@ export default function AngketWizard() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
               <div className="relative">
                 <h2 className="text-3xl font-extrabold text-slate-900">{detail.template.label}</h2>
-                <p className="text-lg text-slate-600 leading-relaxed mt-2 max-w-3xl">Isi identitas responden sebelum penilaian. Tanda <span className="text-rose-500">*</span> wajib. MHS boleh inisial. Data hanya untuk rekap Monev RPL.</p>
+                <p className="text-lg text-slate-600 leading-relaxed mt-2 max-w-3xl">Isi identitas responden sebelum penilaian. Tanda <span className="text-rose-500">*</span> wajib. Data hanya untuk rekap Monev RPL.</p>
                 {RESPONDEN[K] && <p className="text-sm text-slate-500 mt-2 flex items-center gap-2"><UsersIcon size={14} /> Responden: {RESPONDEN[K]}</p>}
                 <p className="text-sm text-slate-500 mt-1">{detail.butir.length} butir · skala 1–4</p>
               </div>
@@ -167,17 +271,55 @@ export default function AngketWizard() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label className="block">
                   <span className="block text-sm font-medium text-slate-700 mb-1">Nama <span className="text-rose-500">*</span></span>
-                  <input value={identitas.nama} onChange={(e) => setIdentitas({ ...identitas, nama: e.target.value })} placeholder="Nama lengkap / inisial" className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm" />
+                  <input value={identitas.nama} onChange={(e) => setIdentitas({ ...identitas, nama: e.target.value })} placeholder="Nama lengkap" className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm" />
                 </label>
-                <label className="block">
-                  <span className="block text-sm font-medium text-slate-700 mb-1">Jabatan <span className="text-rose-500">*</span></span>
-                  <input value={identitas.jabatan} onChange={(e) => setIdentitas({ ...identitas, jabatan: e.target.value })} placeholder="Contoh: Kaprodi, Asesor" className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm" />
-                </label>
-                <label className="block">
-                  <span className="block text-sm font-medium text-slate-700 mb-1">Unit <span className="text-rose-500">*</span></span>
-                  <input value={identitas.unit} onChange={(e) => setIdentitas({ ...identitas, unit: e.target.value })} placeholder="FITK / Pascasarjana / Universitas" className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm" />
-                </label>
-                {needProdi ? (
+
+                {/* Jabatan: select per template, auto untuk MHS */}
+                {isMHS ? (
+                  <label className="block">
+                    <span className="block text-sm font-medium text-slate-700 mb-1">Jabatan <span className="text-rose-500">*</span></span>
+                    <div className="block w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-100 text-sm font-semibold text-slate-700 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" /> Mahasiswa
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1">Otomatis terisi untuk Pemohon RPL.</p>
+                  </label>
+                ) : jabatanOpts ? (
+                  <label className="block">
+                    <span className="block text-sm font-medium text-slate-700 mb-1">Jabatan <span className="text-rose-500">*</span></span>
+                    <select value={identitas.jabatan} onChange={(e) => setIdentitas({ ...identitas, jabatan: e.target.value })} className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm">
+                      <option value="">Pilih jabatan</option>
+                      {jabatanOpts.map((j) => <option key={j} value={j}>{j}</option>)}
+                    </select>
+                  </label>
+                ) : (
+                  <label className="block">
+                    <span className="block text-sm font-medium text-slate-700 mb-1">Jabatan <span className="text-rose-500">*</span></span>
+                    <input value={identitas.jabatan} onChange={(e) => setIdentitas({ ...identitas, jabatan: e.target.value })} placeholder="Jabatan" className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm" />
+                  </label>
+                )}
+
+                {unitFixed && (
+                  <label className="block">
+                    <span className="block text-sm font-medium text-slate-700 mb-1">Unit <span className="text-rose-500">*</span></span>
+                    <div className="block w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-100 text-sm font-semibold text-slate-700 flex items-center justify-between">
+                      <span>{UNIT_UIN}</span><Lock size={14} className="text-slate-400" />
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1">Otomatis UIN Raden Fatah Palembang.</p>
+                  </label>
+                )}
+                {isAsesor && (
+                  <label className="block">
+                    <span className="block text-sm font-medium text-slate-700 mb-1">Fakultas / Unit <span className="text-rose-500">*</span></span>
+                    <select value={identitas.unit} onChange={(e) => setIdentitas({ ...identitas, unit: e.target.value })} className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm">
+                      <option value="">Pilih Fakultas / Unit</option>
+                      {fakultasList.map((f) => <option key={f.id} value={f.nama}>{f.nama}</option>)}
+                      <option value="Universitas">Universitas</option>
+                      <option value="Eksternal">Eksternal</option>
+                    </select>
+                  </label>
+                )}
+
+                {needFakProdi && (
                   <>
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700 mb-1">Fakultas <span className="text-rose-500">*</span></span>
@@ -186,7 +328,7 @@ export default function AngketWizard() {
                         {fakultasList.map((f) => <option key={f.id} value={f.nama}>{f.nama}</option>)}
                       </select>
                     </label>
-                    <label className="block sm:col-span-2">
+                    <label className="block">
                       <span className="block text-sm font-medium text-slate-700 mb-1">Program Studi <span className="text-rose-500">*</span></span>
                       <select value={identitas.prodi} onChange={(e) => setIdentitas({ ...identitas, prodi: e.target.value })} className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm">
                         <option value="">Pilih Prodi</option>
@@ -194,7 +336,27 @@ export default function AngketWizard() {
                       </select>
                     </label>
                   </>
-                ) : (
+                )}
+
+                {isMHS && (
+                  <>
+                    <label className="block">
+                      <span className="block text-sm font-medium text-slate-700 mb-1">Kewarganegaraan <span className="text-rose-500">*</span></span>
+                      <select value={identitas.kewarganegaraan} onChange={(e) => setIdentitas({ ...identitas, kewarganegaraan: e.target.value as any, negara: e.target.value === "WNI" ? "" : identitas.negara })} className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm">
+                        <option value="WNI">WNI</option>
+                        <option value="WNA">WNA</option>
+                      </select>
+                    </label>
+                    {identitas.kewarganegaraan === "WNA" && (
+                      <label className="block animate-fade-in-up">
+                        <span className="block text-sm font-medium text-slate-700 mb-1">Asal Negara <span className="text-rose-500">*</span></span>
+                        <input value={identitas.negara} onChange={(e) => setIdentitas({ ...identitas, negara: e.target.value })} placeholder="Contoh: Malaysia" className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm" />
+                      </label>
+                    )}
+                  </>
+                )}
+
+                {!needFakProdi && !isMHS && (
                   <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
                     <Lock size={14} /> Privasi terjaga — identitas hanya untuk rekap.
                   </div>
@@ -319,7 +481,8 @@ export default function AngketWizard() {
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                   <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Nama</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.nama || "—"}</p></div>
                   <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Jabatan</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.jabatan || "—"}</p></div>
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Unit</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.unit || "—"}</p></div>
+                  {unitFixed && <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Unit</p><p className="font-semibold text-slate-800 mt-1 break-words">{UNIT_UIN}</p></div>}
+                  {isAsesor && <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas / Unit</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.unit || "—"}</p></div>}
                   <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
                     <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Periode</p>
                     <div className="mt-1">
@@ -328,7 +491,8 @@ export default function AngketWizard() {
                       ) : periodeErr ? <p className="font-mono text-sm text-amber-700">{periodeId.slice(0, 8)}… (tidak ditemukan)</p> : <p className="text-sm text-slate-400 animate-pulse">Memuat periode…</p>}
                     </div>
                   </div>
-                  {needProdi && <><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.fakultas || "—"}</p></div><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Program Studi</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.prodi || "—"}</p></div></>}
+                  {needFakProdi && <><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.fakultas || "—"}</p></div><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Program Studi</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.prodi || "—"}</p></div></>}
+                  {isMHS && <><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Kewarganegaraan</p><p className="font-semibold text-slate-800 mt-1">{identitas.kewarganegaraan}</p></div>{identitas.kewarganegaraan === "WNA" && <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Asal Negara</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.negara || "—"}</p></div>}</>}
                 </div>
               </div>
 
@@ -373,19 +537,29 @@ export default function AngketWizard() {
         })()}
 
         {/* Navigation — SurveyFlow 1:1 */}
-        <div className="flex justify-between items-center mt-8">
-          <button type="button" onClick={() => (step === 0 ? navigate("/") : setStep((s) => s - 1))} disabled={step === 0 && false}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${step === 0 ? "text-slate-400 bg-white border border-slate-200 hover:bg-slate-50" : "text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm"}`}>
-            <ChevronLeft size={20} />
-            <span>{step === 0 ? "Beranda" : "Sebelumnya"}</span>
-          </button>
-          {step < dims.length + 2 ? (
-            <button type="button" onClick={handleNext} className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-md">
-              <span>{step === 0 ? "Lanjut ke Penilaian" : isPenilaian && step < dims.length ? `Lanjut ke ${dims[step] ?? "berikutnya"}` : step === dims.length ? "Lanjut ke Terbuka" : "Lanjut ke Review"}</span>
-              <ChevronRight size={20} />
-            </button>
-          ) : <span className="text-xs text-slate-400 hidden sm:inline">Periksa lalu Kirim Survei di atas</span>}
-        </div>
+        {(() => {
+          const isDimStep = step >= 1 && step <= dims.length;
+          const curDimComplete = isDimStep ? currentDimButir.every((b) => skor[b.id] >= 1 && skor[b.id] <= 4) : true;
+          const unansweredCount = isDimStep ? currentDimButir.filter((b) => !skor[b.id]).length : 0;
+          const canNext = step === 0 ? isIdentitasDone : isDimStep ? curDimComplete : true;
+          const nextTitle = !canNext ? (step === 0 ? "Lengkapi identitas & periode terlebih dahulu" : `Lengkapi ${unansweredCount} pertanyaan lagi di dimensi ini`) : undefined;
+          return (
+            <div className="flex justify-between items-center mt-8">
+              <button type="button" onClick={() => (step === 0 ? navigate("/") : setStep((s) => s - 1))}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all border ${step === 0 ? "text-slate-400 bg-white border-slate-200 hover:bg-slate-50" : "text-slate-600 bg-white border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm"}`}>
+                <ChevronLeft size={20} />
+                <span>{step === 0 ? "Beranda" : "Sebelumnya"}</span>
+              </button>
+              {step < dims.length + 2 ? (
+                <button type="button" onClick={handleNext} disabled={!canNext} title={nextTitle} aria-disabled={!canNext}
+                  className={`flex items-center gap-2 px-8 py-3 rounded-xl font-semibold transition-all shadow-md ${canNext ? "bg-slate-900 hover:bg-slate-800 text-white" : "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none border border-slate-200"}`}>
+                  <span>{step === 0 ? "Lanjut ke Penilaian" : isPenilaian && step < dims.length ? `Lanjut ke ${dims[step] ?? "berikutnya"}` : step === dims.length ? "Lanjut ke Terbuka" : "Lanjut ke Review"}</span>
+                  <ChevronRight size={20} />
+                </button>
+              ) : <span className="text-xs text-slate-400 hidden sm:inline">Periksa lalu Kirim Survei di atas</span>}
+            </div>
+          );
+        })()}
       </main>
 
       {/* Confirm modal — SurveyFlow card */}
@@ -425,4 +599,3 @@ export default function AngketWizard() {
     </div>
   );
 }
-

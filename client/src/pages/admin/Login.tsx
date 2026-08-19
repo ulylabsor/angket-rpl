@@ -17,7 +17,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="page-pattern min-h-screen flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">

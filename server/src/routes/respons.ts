@@ -14,9 +14,13 @@ const submitSchema = z.object({
   identitas: z.object({
     nama: z.string().min(1),
     jabatan: z.string().min(1),
-    unit: z.string().min(1),
+    unit: z.string().optional().nullable(),
     prodi: z.string().optional().nullable(),
     fakultas: z.string().optional().nullable(),
+    kewarganegaraan: z.string().optional().nullable(),
+    negara: z.string().optional().nullable(),
+    negaraAsal: z.string().optional().nullable(),
+    asalNegara: z.string().optional().nullable(),
   }),
   jawabanSkala: z.array(z.object({ butirId: z.string(), skor: z.number().int().min(1).max(4) })).min(1),
   jawabanTerbuka: z.object({
@@ -49,9 +53,15 @@ responsRouter.post("/", async (req, res) => {
   const butirByDimensi: Record<string, typeof butirList> = {};
   for (const b of butirList) (butirByDimensi[b.dimensi] ??= []).push(b);
 
-  // Identitas: prodi/fakultas wajib untuk FAK & MHS
-  if ((kode === "FAK" || kode === "MHS") && (!identitas.fakultas || !identitas.prodi)) {
+  // Identitas: fakultas/prodi wajib untuk FAK, SEK, MHS
+  if ((kode === "FAK" || kode === "SEK" || kode === "MHS") && (!identitas.fakultas || !identitas.prodi)) {
     return res.status(400).json({ error: "Fakultas dan Program Studi wajib untuk angket ini" });
+  }
+  // MHS WNA wajib negara asal
+  if (kode === "MHS") {
+    const kw = String((identitas as any).kewarganegaraan ?? "").toUpperCase();
+    const negara = String((identitas as any).negara ?? (identitas as any).negaraAsal ?? (identitas as any).asalNegara ?? "").trim();
+    if (kw === "WNA" && !negara) return res.status(400).json({ error: "Asal negara wajib untuk WNA" });
   }
 
   const seen = new Set<string>();

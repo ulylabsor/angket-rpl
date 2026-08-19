@@ -10,9 +10,9 @@ const META: Record<string, { icon: string; desc: string; responden: string }> = 
   UNIV: { icon: "fa-building-columns", desc: "Kebijakan, pedoman & kepemimpinan universitas", responden: "Rektor · Warek 1 · Ketua & Sekretaris Pengelola RPL Universitas" },
   FAK: { icon: "fa-graduation-cap", desc: "Pengelola RPL Fakultas / Pascasarjana / Prodi", responden: "Direktur & Wadir Pascasarjana · Dekan & Wadek 1 · Ketua Prodi" },
   LPM: { icon: "fa-magnifying-glass-chart", desc: "Pengawasan mutu & tindak lanjut", responden: "Tim LPM" },
-  ASESOR: { icon: "fa-chalkboard-user", desc: "Profesionalisme & proses asesmen RPL", responden: "Tim Asesor RPL (Asesor 1 & 2)" },
+  ASESOR: { icon: "fa-chalkboard-user", desc: "Profesionalisme & proses asesmen RPL", responden: "Tim Asesor RPL" },
   SEK: { icon: "fa-folder-open", desc: "Administrasi & pelayanan sekretariat", responden: "Sekretaris Prodi & Staf Administrasi Prodi" },
-  MHS: { icon: "fa-user-graduate", desc: "Pengalaman & kepuasan pemohon RPL", responden: "Mahasiswa / Pemohon RPL (boleh inisial)" },
+  MHS: { icon: "fa-user-graduate", desc: "Pengalaman & kepuasan pemohon RPL", responden: "Mahasiswa / Pemohon RPL" },
 };
 
 export default function Landing() {
@@ -31,7 +31,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50/50 font-sans text-slate-800 flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="page-pattern min-h-screen font-sans text-slate-800 flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
       {/* Header — SurveyFlow 1:1 */}
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">

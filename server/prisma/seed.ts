@@ -160,8 +160,8 @@ const BUTIR: RawButir[] = [
 ];
 
 const FAKULTAS_SEED: { nama: string; kode: string; prodi: string[] }[] = [
-  { nama: "Pascasarjana", kode: "PPS", prodi: ["S3 Pendidikan Agama Islam", "S3 Peradaban Islam", "S2 Studi Islam"] },
-  { nama: "Fakultas Ilmu Tarbiyah dan Keguruan", kode: "FITK", prodi: ["S2 Pendidikan Agama Islam","S2 Manajemen Pendidikan Islam","S1 Pendidikan Agama Islam","S1 Manajemen Pendidikan Islam","S1 Pendidikan Bahasa Inggris","S1 Pendidikan Guru Madrasah Ibtidaiyah","S1 Pendidikan Bahasa Arab","S1 Pendidikan Biologi","S1 Pendidikan Matematika","S1 Pendidikan Fisika","S1 Pendidikan Islam Anak Usia Dini","S1 Pendidikan Kimia","S1 Pendidikan Profesi Guru"] },
+  { nama: "Pascasarjana", kode: "PPS", prodi: ["S3 Pendidikan Agama Islam", "S3 Peradaban Islam", "S2 Studi Islam", "S2 Pendidikan Agama Islam", "S2 Manajemen Pendidikan Islam"] },
+  { nama: "Fakultas Ilmu Tarbiyah dan Keguruan", kode: "FITK", prodi: ["S1 Pendidikan Agama Islam","S1 Manajemen Pendidikan Islam","S1 Pendidikan Bahasa Inggris","S1 Pendidikan Guru Madrasah Ibtidaiyah","S1 Pendidikan Bahasa Arab","S1 Pendidikan Biologi","S1 Pendidikan Matematika","S1 Pendidikan Fisika","S1 Pendidikan Islam Anak Usia Dini","S1 Pendidikan Kimia","S1 Pendidikan Profesi Guru"] },
   { nama: "Fakultas Psikologi", kode: "FPSI", prodi: ["S1 Psikologi"] },
   { nama: "Fakultas Dakwah dan Komunikasi", kode: "FDK", prodi: ["S1 Manajemen Dakwah","S1 Jurnalistik","S1 Komunikasi dan Penyiaran Islam","S1 Bimbingan Penyuluhan Islam","S1 Pengembangan Masyarakat Islam"] },
   { nama: "Fakultas Sains dan Teknologi", kode: "FST", prodi: ["S1 Kimia","S1 Sistem Informasi","S1 Biologi"] },
