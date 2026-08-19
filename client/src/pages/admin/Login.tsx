@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Lock, User, ShieldCheck, ArrowLeft } from "lucide-react";
+import { Lock, User, ArrowLeft } from "lucide-react";
 import { apiFetch } from "../../lib/api";
 
 export default function Login() {
@@ -22,7 +22,6 @@ export default function Login() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-8 h-8 object-contain rounded-lg" />
-            <span className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-lg hidden sm:flex items-center justify-center text-white shadow-sm"><ShieldCheck size={18} /></span>
             <span className="font-extrabold text-xl text-slate-800 tracking-tight">Monev RPL</span>
           </Link>
           <Link to="/" className="text-sm font-semibold text-slate-600 hover:text-indigo-600 flex items-center gap-1"><ArrowLeft size={16} /> Beranda</Link>

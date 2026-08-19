@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, ChevronRight, Users, Info, X, ClipboardCheck, Timer, Shield, FileCheck, AlertCircle } from "lucide-react";
+import { ChevronRight, Users, Info, X, ClipboardCheck, Timer, Shield, FileCheck, AlertCircle } from "lucide-react";
 import { apiFetch } from "../lib/api";
 
 type Periode = { id: string; nama: string; tahun: number; status: string };
@@ -37,9 +37,6 @@ export default function Landing() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
             <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-8 h-8 object-contain rounded-lg shadow-sm" />
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-lg hidden sm:flex items-center justify-center text-white shadow-sm group-hover:shadow-md transition-all">
-              <ShieldCheck size={18} />
-            </div>
             <span className="font-extrabold text-xl text-slate-800 tracking-tight">Monev RPL</span>
             <span className="hidden sm:inline text-xs font-medium text-slate-500 ml-1">UIN Raden Fatah · Tipe A</span>
           </div>
@@ -52,11 +49,9 @@ export default function Landing() {
       </header>
 
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
-        {/* Welcome hero — 1:1 SurveyFlow */}
+        {/* Welcome hero */}
         <div className="min-h-[30vh] flex flex-col items-center justify-center text-center animate-fade-in-up pt-4">
-          <div className="w-20 h-20 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-indigo-200">
-            <ShieldCheck size={40} />
-          </div>
+          <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-24 h-24 object-contain mb-8 drop-shadow-md" />
           <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
             Selamat Datang di <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">Monev RPL</span>
           </h1>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { ShieldCheck, LayoutDashboard, ClipboardList, Users, LogOut, Menu, X, User } from "lucide-react";
+import { LayoutDashboard, ClipboardList, Users, LogOut, Menu, X, User } from "lucide-react";
 import { apiFetch } from "../../lib/api";
 
 const NAV = [
@@ -38,7 +38,6 @@ export default function AdminLayout() {
         <div className="h-20 flex items-center px-6 bg-slate-950/50 border-b border-slate-800 justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-8 h-8 object-contain rounded-lg bg-white p-0.5" />
-            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 shrink-0"><ShieldCheck size={20} /></div>
             <span className="font-extrabold text-xl text-white tracking-tight truncate">Monev RPL</span>
           </div>
           <button className="md:hidden text-slate-400 hover:text-white" onClick={() => setIsSidebarOpen(false)}><X size={24} /></button>

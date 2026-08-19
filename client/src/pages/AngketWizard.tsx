@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
-import { ShieldCheck, ChevronLeft, ChevronRight, Check, AlertCircle, CheckCircle2, ClipboardList, Lock, Users as UsersIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, AlertCircle, CheckCircle2, ClipboardList, Lock, Users as UsersIcon } from "lucide-react";
 import { apiFetch } from "../lib/api";
 
 type Butir = { id: string; templateId: string; dimensi: string; nomor: number; teks: string; urut: number };
@@ -125,7 +125,6 @@ export default function AngketWizard() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
           <Link to="/" className="flex items-center gap-2 group">
             <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-8 h-8 object-contain rounded-lg" />
-            <span className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-lg hidden sm:flex items-center justify-center text-white shadow-sm"><ShieldCheck size={18} /></span>
             <span className="font-extrabold text-xl text-slate-800 tracking-tight">Monev RPL</span>
             <span className="hidden md:inline text-xs text-slate-500">· UIN Raden Fatah · {K} · {detail.butir.length} butir</span>
           </Link>
@@ -399,7 +398,7 @@ export default function AngketWizard() {
             <button aria-label="Tutup" onClick={() => !submitting && setShowConfirm(false)} className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" />
             <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up">
               <div className="bg-white p-8 text-center border-b border-slate-100">
-                <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4"><ShieldCheck size={32} /></div>
+                <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-16 h-16 object-contain mx-auto mb-4 drop-shadow-sm" />
                 <h3 className="text-xl font-bold text-slate-900">Kirim jawaban sekarang?</h3>
                 <p className="text-sm text-slate-500 mt-1">Jawaban akan terekam dan tidak dapat diubah.</p>
               </div>
