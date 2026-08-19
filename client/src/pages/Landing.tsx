@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ShieldCheck, Lock, ChevronRight, Users } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ShieldCheck, ChevronRight, Users, Info, X, ClipboardCheck, Timer, Shield, FileCheck, AlertCircle } from "lucide-react";
 import { apiFetch } from "../lib/api";
 
 type Periode = { id: string; nama: string; tahun: number; status: string };
@@ -19,7 +19,7 @@ export default function Landing() {
   const [periodeList, setPeriodeList] = useState<Periode[]>([]);
   const [angketList, setAngketList] = useState<AngketCard[]>([]);
   const [periodeId, setPeriodeId] = useState("");
-  const nav = useNavigate();
+  const [infoOpen, setInfoOpen] = useState(false);
 
   useEffect(() => {
     apiFetch<Periode[]>("/periode").then((ps) => {
@@ -43,10 +43,10 @@ export default function Landing() {
             <span className="font-extrabold text-xl text-slate-800 tracking-tight">Monev RPL</span>
             <span className="hidden sm:inline text-xs font-medium text-slate-500 ml-1">UIN Raden Fatah · Tipe A</span>
           </div>
-          <button onClick={() => nav("/admin/login")} className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors bg-slate-100 hover:bg-indigo-50 px-4 py-2 rounded-xl">
-            <Lock size={16} />
-            <span className="hidden sm:inline">Masuk Admin</span>
-            <span className="sm:hidden">Admin</span>
+          <button onClick={() => setInfoOpen(true)} className="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-indigo-700 transition-colors bg-white border border-slate-200 hover:border-indigo-200 hover:bg-indigo-50 px-4 py-2 rounded-xl shadow-sm">
+            <Info size={16} />
+            <span className="hidden sm:inline">Info</span>
+            <span className="sm:hidden">Info</span>
           </button>
         </div>
       </header>
@@ -134,6 +134,100 @@ export default function Landing() {
       <footer className="py-6 text-center text-slate-400 text-sm font-medium">
         <p>&copy; {new Date().getFullYear()} Monev RPL — UIN Raden Fatah Palembang. Desain Elegan &amp; Responsif.</p>
       </footer>
+
+      {/* Info modal — tata cara + info */}
+      {infoOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <button aria-label="Tutup" onClick={() => setInfoOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
+          <div className="relative w-full max-w-2xl bg-white rounded-[1.75rem] shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up max-h-[90vh] flex flex-col">
+            {/* header gradient */}
+            <div className="relative bg-gradient-to-br from-indigo-600 via-indigo-600 to-blue-600 px-6 sm:px-8 pt-7 pb-8 text-white overflow-hidden shrink-0">
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/15 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-56 h-56 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
+              <button onClick={() => setInfoOpen(false)} className="absolute top-4 right-4 w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur flex items-center justify-center text-white transition-colors">
+                <X size={18} />
+              </button>
+              <div className="relative flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur border border-white/20 flex items-center justify-center shrink-0">
+                  <Info size={24} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight">Panduan Pengisian Angket</h3>
+                  <p className="text-indigo-100 text-sm mt-1.5 leading-relaxed max-w-lg">Monev RPL Tipe A — UIN Raden Fatah Palembang. Dibaca sebelum mengisi.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-auto px-6 sm:px-8 py-6 space-y-6">
+              {/* langkah */}
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-lg bg-indigo-600 text-white grid place-items-center"><ClipboardCheck size={14} /></span>
+                  Tata cara pengisian
+                </h4>
+                <ol className="mt-3 space-y-3">
+                  {[
+                    { n: "1", t: "Pilih Periode aktif di atas — tanpa periode angket tidak bisa dikirim." },
+                    { n: "2", t: "Pilih jenis angket sesuai peran (UNIV / FAK / LPM / ASESOR / SEK / MHS)." },
+                    { n: "3", t: "Isi Identitas: Nama, Jabatan, Unit. Untuk FAK & MHS wajib pilih Fakultas & Prodi." },
+                    { n: "4", t: "Nilai tiap pernyataan skala 1–4: 1 Sangat Kurang · 2 Kurang · 3 Baik · 4 Sangat Baik." },
+                    { n: "5", t: "Lengkapi semua dimensi, lalu isi Q21–Q25 (terbuka, opsional) bila ada masukan." },
+                    { n: "6", t: "Cek Review, lalu Kirim. Data langsung masuk rekap & live via SSE ke admin." },
+                  ].map((s) => (
+                    <li key={s.n} className="flex gap-3">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white text-xs font-bold grid place-items-center">{s.n}</span>
+                      <p className="text-sm text-slate-700 leading-relaxed pt-0.5">{s.t}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              {/* skala */}
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-lg bg-amber-500 text-white grid place-items-center"><AlertCircle size={14} /></span>
+                  Skala &amp; kategori mutu
+                </h4>
+                <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                  <span className="px-3 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-bold text-center">1 · Sangat Kurang</span>
+                  <span className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 font-bold text-center">2 · Kurang</span>
+                  <span className="px-3 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-center">3 · Baik</span>
+                  <span className="px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-center">4 · Sangat Baik</span>
+                </div>
+                <p className="text-xs text-slate-500 mt-3">Nilai agregat dikonversi ke 0–100 dan dikategorikan untuk laporan &amp; tindak lanjut.</p>
+              </div>
+
+              {/* info tambahan */}
+              <div className="grid sm:grid-cols-3 gap-3">
+                <div className="rounded-2xl bg-white border border-slate-200 p-4">
+                  <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center"><Timer size={16} /></div>
+                  <p className="text-sm font-bold text-slate-800 mt-3">Durasi</p>
+                  <p className="text-xs text-slate-500 mt-1">±5–10 menit tergantung jenis angket.</p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-200 p-4">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center"><Shield size={16} /></div>
+                  <p className="text-sm font-bold text-slate-800 mt-3">Privasi</p>
+                  <p className="text-xs text-slate-500 mt-1">Identitas hanya untuk rekap Monev, tidak dipublikasi perorangan.</p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-200 p-4">
+                  <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 grid place-items-center"><FileCheck size={16} /></div>
+                  <p className="text-sm font-bold text-slate-800 mt-3">Setelah kirim</p>
+                  <p className="text-xs text-slate-500 mt-1">Terekam permanen &amp; tampil di dashboard admin.</p>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex gap-3">
+                <AlertCircle size={16} className="text-amber-600 shrink-0 mt-0.5" />
+                <p className="text-xs text-amber-800 leading-relaxed">Pilih angket sesuai peran agar data valid. Salah pilih? Kembali ke beranda dan pilih ulang — jawaban belum terkirim masih bisa diubah.</p>
+              </div>
+            </div>
+
+            <div className="px-6 sm:px-8 py-4 bg-slate-50 border-t border-slate-200 flex justify-end shrink-0">
+              <button onClick={() => setInfoOpen(false)} className="px-6 py-3 bg-slate-900 hover:bg-black text-white rounded-xl text-sm font-bold shadow-md">Mengerti</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
