@@ -1,0 +1,73 @@
+- generic [ref=f13e3]:
+  - banner [ref=f13e4]:
+    - generic [ref=f13e5]:
+      - generic [ref=f13e6]:
+        - button "" [ref=f13e7]
+        - generic [ref=f13e9]: 
+        - generic [ref=f13e11]:
+          - heading "Pengelola RPL Fakultas/Pascasarjana/Prodi" [level=2] [ref=f13e12]
+          - paragraph [ref=f13e13]: UIN Raden Fatah · RPL Tipe A · FAK · 21 butir · skala 1–5
+      - generic [ref=f13e14]:
+        - generic [ref=f13e15]: 0/21
+        - generic [ref=f13e16]: 17%
+    - list [ref=f13e20]:
+      - listitem [ref=f13e21]:
+        - button " Identitas Nama & prodi" [disabled] [ref=f13e22]:
+          - generic [ref=f13e23]: 
+          - generic [ref=f13e25]:
+            - generic [ref=f13e26]: Identitas
+            - generic [ref=f13e27]: Nama & prodi
+      - listitem [ref=f13e28]:
+        - button " Penilaian 3 dimensi · 21 butir" [disabled] [ref=f13e30]:
+          - generic [ref=f13e31]: 
+          - generic [ref=f13e33]:
+            - generic [ref=f13e34]: Penilaian
+            - generic [ref=f13e35]: 3 dimensi · 21 butir
+      - listitem [ref=f13e36]:
+        - button " Terbuka Q21–Q25" [disabled] [ref=f13e38]:
+          - generic [ref=f13e39]: 
+          - generic [ref=f13e41]:
+            - generic [ref=f13e42]: Terbuka
+            - generic [ref=f13e43]: Q21–Q25
+      - listitem [ref=f13e44]:
+        - button " Review Kirim" [disabled] [ref=f13e46]:
+          - generic [ref=f13e47]: 
+          - generic [ref=f13e49]:
+            - generic [ref=f13e50]: Review
+            - generic [ref=f13e51]: Kirim
+  - main [ref=f13e52]:
+    - generic [ref=f13e53]:
+      - generic [ref=f13e54]:
+        - generic [ref=f13e55]: Langkah 1/6 · Identitas
+        - heading "Pengelola RPL Fakultas/Pascasarjana/Prodi" [level=3] [ref=f13e57]
+        - paragraph [ref=f13e58]:
+          - text: Silakan isi identitas dan beri penilaian — skala 1–5.
+          - generic [ref=f13e59]: 21 butir
+          - text: .
+      - generic [ref=f13e60]:
+        - generic [ref=f13e61]:
+          - generic [ref=f13e62]:
+            - generic [ref=f13e63]: Nama *
+            - textbox "Nama *" [ref=f13e64]:
+              - /placeholder: Nama lengkap / inisial (MHS boleh inisial)
+          - generic [ref=f13e65]:
+            - generic [ref=f13e66]: Jabatan *
+            - textbox "Jabatan *" [ref=f13e67]:
+              - /placeholder: "Contoh: Kaprodi, Asesor, Mahasiswa"
+          - generic [ref=f13e68]:
+            - generic [ref=f13e69]: Unit *
+            - textbox "Unit *" [ref=f13e70]:
+              - /placeholder: "Contoh: FITK, Pascasarjana, Universitas"
+          - generic [ref=f13e71]:
+            - generic [ref=f13e72]: Fakultas *
+            - combobox "Fakultas *" [ref=f13e73]:
+              - option "Pilih Fakultas" [selected]
+          - generic [ref=f13e74]:
+            - generic [ref=f13e75]: Program Studi *
+            - combobox "Program Studi *" [ref=f13e76]:
+              - option "Pilih Prodi" [selected]
+        - paragraph [ref=f13e77]: "Skala 1–5: 1=Sangat Kurang, 2=Kurang, 3=Cukup, 4=Baik, 5=Sangat Baik."
+      - paragraph [ref=f13e78]: Lengkapi identitas (termasuk Fakultas & Prodi) dan pastikan periode terpilih.
+      - button "Lanjut ke dimensi " [disabled] [ref=f13e80]:
+        - text: Lanjut ke dimensi
+        - generic [ref=f13e81]: 

@@ -1,0 +1,33 @@
+- generic [ref=f5e3]:
+  - banner [ref=f5e4]:
+    - generic [ref=f5e5]:
+      - button "" [ref=f5e6]
+      - generic [ref=f5e8]: 
+      - generic [ref=f5e10]:
+        - heading "Pengelola RPL Universitas" [level=2] [ref=f5e11]
+        - paragraph [ref=f5e12]: Identitas — 1/6 · UNIV
+    - generic [ref=f5e13]: 0/18 terisi
+  - generic [ref=f5e14]: 17%
+  - main [ref=f5e17]:
+    - generic [ref=f5e18]:
+      - generic [ref=f5e19]:
+        - heading "Pengelola RPL Universitas" [level=3] [ref=f5e20]
+        - paragraph [ref=f5e21]: Silakan isi identitas dan beri penilaian — skala 1–5.
+      - generic [ref=f5e22]:
+        - generic [ref=f5e23]:
+          - generic [ref=f5e24]:
+            - generic [ref=f5e25]: Nama *
+            - textbox "Nama *" [ref=f5e26]:
+              - /placeholder: Nama lengkap / inisial (MHS boleh inisial)
+          - generic [ref=f5e27]:
+            - generic [ref=f5e28]: Jabatan *
+            - textbox "Jabatan *" [ref=f5e29]:
+              - /placeholder: "Contoh: Kaprodi, Asesor, Mahasiswa"
+          - generic [ref=f5e30]:
+            - generic [ref=f5e31]: Unit *
+            - textbox "Unit *" [ref=f5e32]:
+              - /placeholder: "Contoh: FITK, Pascasarjana, Universitas"
+        - paragraph [ref=f5e33]: "Skala 1–5: 1=Sangat Kurang, 2=Kurang, 3=Cukup, 4=Baik, 5=Sangat Baik."
+      - button "Lanjut " [disabled] [ref=f5e35]:
+        - text: Lanjut
+        - generic [ref=f5e36]: 

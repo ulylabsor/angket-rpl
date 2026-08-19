@@ -1,0 +1,79 @@
+- generic [ref=f12e3]:
+  - banner [ref=f12e4]:
+    - generic [ref=f12e5]:
+      - generic [ref=f12e6]: 
+      - generic [ref=f12e8]:
+        - generic [ref=f12e9]: Monev Angket
+        - generic [ref=f12e10]: UIN Raden Fatah Palembang · RPL Tipe A
+    - link "Admin" [ref=f12e11] [cursor=pointer]:
+      - /url: /admin/login
+  - main [ref=f12e12]:
+    - generic [ref=f12e13]:
+      - generic [ref=f12e14]:
+        - generic [ref=f12e15]: Periode aktif
+        - heading "Pengisian Angket Monev" [level=1] [ref=f12e17]
+        - paragraph [ref=f12e18]: Pilih periode aktif dan jenis angket sesuai peran Anda. Pengisian dioptimalkan untuk HP.
+      - generic [ref=f12e19]:
+        - generic [ref=f12e20]: Periode
+        - combobox [ref=f12e21]:
+          - option "Monev RPL 2026 Ganjil — 2026 (aktif)" [selected]
+    - generic [ref=f12e22]:
+      - generic [ref=f12e23]:
+        - heading "Pilih Jenis Angket" [level=2] [ref=f12e24]
+        - generic [ref=f12e25]: 6 jenis responden
+      - generic [ref=f12e26]:
+        - link " Asesor RPL Profesionalisme & proses asesmen RPL 25 pernyataan · skala 1–5 Isi" [ref=f12e27] [cursor=pointer]:
+          - /url: /angket/ASESOR?periodeId=cmsycqslr0093zaupe3shecmh
+          - generic [ref=f12e28]:
+            - generic [ref=f12e29]: 
+            - generic [ref=f12e31]:
+              - generic [ref=f12e32]: Asesor RPL
+              - generic [ref=f12e33]: Profesionalisme & proses asesmen RPL
+              - generic [ref=f12e34]: 25 pernyataan · skala 1–5
+          - generic [ref=f12e35]: Isi
+        - link " Pengelola RPL Fakultas/Pascasarjana/Prodi Pengelola RPL Fakultas / Pascasarjana / Prodi 21 pernyataan · skala 1–5 Isi" [ref=f12e36] [cursor=pointer]:
+          - /url: /angket/FAK?periodeId=cmsycqslr0093zaupe3shecmh
+          - generic [ref=f12e37]:
+            - generic [ref=f12e38]: 
+            - generic [ref=f12e40]:
+              - generic [ref=f12e41]: Pengelola RPL Fakultas/Pascasarjana/Prodi
+              - generic [ref=f12e42]: Pengelola RPL Fakultas / Pascasarjana / Prodi
+              - generic [ref=f12e43]: 21 pernyataan · skala 1–5
+          - generic [ref=f12e44]: Isi
+        - link " LPM / GJM / Tim Monev Pengawasan mutu & tindak lanjut LPM/GJM 26 pernyataan · skala 1–5 Isi" [ref=f12e45] [cursor=pointer]:
+          - /url: /angket/LPM?periodeId=cmsycqslr0093zaupe3shecmh
+          - generic [ref=f12e46]:
+            - generic [ref=f12e47]: 
+            - generic [ref=f12e49]:
+              - generic [ref=f12e50]: LPM / GJM / Tim Monev
+              - generic [ref=f12e51]: Pengawasan mutu & tindak lanjut LPM/GJM
+              - generic [ref=f12e52]: 26 pernyataan · skala 1–5
+          - generic [ref=f12e53]: Isi
+        - link " Pemohon / Mahasiswa RPL Pengalaman & kepuasan pemohon RPL 20 pernyataan · skala 1–5 Isi" [ref=f12e54] [cursor=pointer]:
+          - /url: /angket/MHS?periodeId=cmsycqslr0093zaupe3shecmh
+          - generic [ref=f12e55]:
+            - generic [ref=f12e56]: 
+            - generic [ref=f12e58]:
+              - generic [ref=f12e59]: Pemohon / Mahasiswa RPL
+              - generic [ref=f12e60]: Pengalaman & kepuasan pemohon RPL
+              - generic [ref=f12e61]: 20 pernyataan · skala 1–5
+          - generic [ref=f12e62]: Isi
+        - link " Sekretariat / Pengelola Administrasi Administrasi & pelayanan sekretariat 10 pernyataan · skala 1–5 Isi" [ref=f12e63] [cursor=pointer]:
+          - /url: /angket/SEK?periodeId=cmsycqslr0093zaupe3shecmh
+          - generic [ref=f12e64]:
+            - generic [ref=f12e65]: 
+            - generic [ref=f12e67]:
+              - generic [ref=f12e68]: Sekretariat / Pengelola Administrasi
+              - generic [ref=f12e69]: Administrasi & pelayanan sekretariat
+              - generic [ref=f12e70]: 10 pernyataan · skala 1–5
+          - generic [ref=f12e71]: Isi
+        - link " Pengelola RPL Universitas Kebijakan, pedoman & kepemimpinan universitas 18 pernyataan · skala 1–5 Isi" [ref=f12e72] [cursor=pointer]:
+          - /url: /angket/UNIV?periodeId=cmsycqslr0093zaupe3shecmh
+          - generic [ref=f12e73]:
+            - generic [ref=f12e74]: 
+            - generic [ref=f12e76]:
+              - generic [ref=f12e77]: Pengelola RPL Universitas
+              - generic [ref=f12e78]: Kebijakan, pedoman & kepemimpinan universitas
+              - generic [ref=f12e79]: 18 pernyataan · skala 1–5
+          - generic [ref=f12e80]: Isi
+    - paragraph [ref=f12e81]: "Link angket publik — tanpa login. Identitas: Nama/Jabatan/Unit (+ Prodi/Fakultas untuk FAK & MHS)."

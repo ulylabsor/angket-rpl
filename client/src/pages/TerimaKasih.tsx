@@ -1,106 +1,77 @@
-import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { CheckCircle2 } from "lucide-react";
 
 export default function TerimaKasih() {
   const { kode } = useParams();
   const loc = useLocation() as any;
   const data = loc.state as { nilaiAkhir?: number; kategori?: string; tindakLanjut?: string; nilaiPerDimensi?: Record<string, number> } | null;
-  const [stage, setStage] = useState<"loading" | "done">("loading");
-
-  useEffect(() => {
-    const t = setTimeout(() => setStage("done"), 1600);
-    return () => clearTimeout(t);
-  }, []);
-
-  if (stage === "loading") {
-    return (
-      <div className="min-h-full flex flex-col items-center justify-center p-8 bg-transparent flex-1 gap-6">
-        <div className="relative w-24 h-24 flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full border-4 border-indigo-100" />
-          <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-indigo-600 animate-spin" style={{ animationDuration: "0.9s" }} />
-          <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200 animate-pulse">
-            <i className="fa-solid fa-paper-plane text-lg" />
-          </div>
-        </div>
-        <div className="text-center space-y-2">
-          <p className="text-sm font-extrabold text-slate-700">Mengirim jawaban Anda...</p>
-          <p className="text-xs text-slate-400">Mohon tunggu, kami menyimpan respons angket <b className="text-indigo-600">{kode}</b></p>
-          <div className="flex justify-center gap-1 pt-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-600 animate-bounce" style={{ animationDelay: "0ms" }} />
-            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-            <span className="w-2 h-2 rounded-full bg-indigo-300 animate-bounce" style={{ animationDelay: "300ms" }} />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const kategoriTone: Record<string, string> = {
-    "Sangat Baik": "bg-emerald-600",
-    "Baik": "bg-indigo-600",
-    "Cukup": "bg-amber-500",
-    "Kurang": "bg-orange-500",
-    "Sangat Kurang": "bg-rose-600",
+    "Sangat Baik": "bg-emerald-100 text-emerald-700 border-emerald-200",
+    "Baik": "bg-blue-100 text-blue-700 border-blue-200",
+    "Cukup": "bg-amber-100 text-amber-700 border-amber-200",
+    "Kurang": "bg-orange-100 text-orange-700 border-orange-200",
+    "Sangat Kurang": "bg-rose-100 text-rose-700 border-rose-200",
   };
 
   return (
-    <div className="min-h-full flex items-center justify-center p-4 bg-transparent flex-1">
-      <div className="w-full max-w-md bg-white rounded-[2rem] shadow-xl shadow-slate-200/60 border border-slate-100 p-8 sm:p-10 text-center space-y-5 animate-[in_0.45s_ease-out]">
-        <style>{`@keyframes in{from{opacity:0;transform:translateY(10px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}} @keyframes pop{0%{transform:scale(0.6)}60%{transform:scale(1.08)}100%{transform:scale(1)}} @keyframes ring{0%{transform:scale(0.85);opacity:0.9}100%{transform:scale(1.35);opacity:0}}`}</style>
-
-        {/* Success icon with animated ring */}
-        <div className="relative w-20 h-20 mx-auto">
-          <span className="absolute inset-0 rounded-[1.25rem] bg-emerald-100" style={{ animation: "ring 1.4s ease-out 0.2s 2" }} />
-          <div className="relative w-20 h-20 rounded-[1.25rem] bg-emerald-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-emerald-200" style={{ animation: "pop 0.5s cubic-bezier(0.34,1.56,0.64,1)" }}>
-            <i className="fa-solid fa-check" />
+    <div className="min-h-screen bg-slate-50/50 flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
+      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-8 h-8 object-contain rounded-lg" />
+            <span className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-lg hidden sm:flex items-center justify-center text-white shadow-sm"><CheckCircle2 size={18} /></span>
+            <span className="font-extrabold text-xl text-slate-800 tracking-tight">Monev RPL</span>
+          </Link>
+        </div>
+      </header>
+      <div className="flex-1 min-h-[80vh] flex items-center justify-center px-4 py-10 animate-fade-in-up">
+        <div className="bg-white p-12 rounded-3xl shadow-xl border border-slate-100 max-w-xl w-full text-center">
+          <div className="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce-slight">
+            <CheckCircle2 size={48} strokeWidth={2.5} />
           </div>
-          <span className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs shadow-md"><i className="fa-solid fa-sparkles" /></span>
-        </div>
-
-        <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Terima kasih!</h1>
-          <p className="text-slate-500 text-sm mt-1.5 leading-relaxed">Angket <b className="text-slate-800">{kode}</b> Anda berhasil dikirim dan terekam. Jawaban Anda sangat berarti untuk peningkatan mutu RPL.</p>
-          <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Tersimpan · {new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
-          </span>
-        </div>
-
-        {data?.nilaiAkhir != null && (
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-3">
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-slate-500">Nilai Akhir</span>
-              <b className="text-base text-slate-900">{Math.round(data.nilaiAkhir * 100) / 100} <span className="text-xs font-normal text-slate-400">/ 100</span></b>
-            </div>
-            <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-              <div className="h-full bg-indigo-600 rounded-full transition-all" style={{ width: `${Math.min(100, data.nilaiAkhir)}%` }} />
-            </div>
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-slate-500">Kategori</span>
-              <span className={`px-3 py-1 text-white rounded-lg text-xs font-bold ${kategoriTone[data.kategori ?? ""] ?? "bg-slate-700"}`}>{data.kategori}</span>
-            </div>
-            {data.nilaiPerDimensi && (
-              <div className="text-xs text-slate-600 pt-3 border-t border-slate-200 space-y-1.5">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Per dimensi</p>
-                {Object.entries(data.nilaiPerDimensi).map(([k, v]) => (
-                  <div key={k} className="flex justify-between py-1.5 px-3 bg-white rounded-xl border border-slate-200">
-                    <span>{k}</span><span className="font-bold text-slate-800">{Math.round(v * 100) / 100}</span>
-                  </div>
-                ))}
+          <h1 className="text-3xl font-extrabold text-slate-900">Survei Berhasil Dikirim!</h1>
+          <p className="text-slate-600 text-lg mt-3 leading-relaxed">
+            Terima kasih telah meluangkan waktu untuk berpartisipasi. Angket <b className="text-slate-800">{kode}</b> Anda berhasil terekam dan sangat berarti bagi peningkatan mutu RPL.
+          </p>
+          {data?.nilaiAkhir != null && (
+            <div className="mt-8 bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left space-y-3">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-slate-500 font-medium">Nilai Akhir</span>
+                <span className="font-bold text-slate-900 text-base">{Math.round((data.nilaiAkhir as number) * 100) / 100} <span className="text-xs font-normal text-slate-400">/ 100</span></span>
               </div>
-            )}
+              <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full" style={{ width: `${Math.min(100, data.nilaiAkhir as number)}%` }} />
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-slate-500 font-medium">Kategori</span>
+                <span className={`px-3 py-1 rounded-full border text-xs font-bold ${kategoriTone[data.kategori ?? ""] ?? "bg-slate-100 border-slate-200 text-slate-700"}`}>{data.kategori ?? "—"}</span>
+              </div>
+              {data?.tindakLanjut && <p className="text-xs text-slate-500 pt-2 border-t border-slate-200">Tindak lanjut: <b className="text-slate-700">{data.tindakLanjut}</b></p>}
+              {data?.nilaiPerDimensi && (
+                <div className="pt-3 border-t border-slate-200 space-y-1.5">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Per dimensi</p>
+                  {Object.entries(data.nilaiPerDimensi).map(([k, v]) => (
+                    <div key={k} className="flex justify-between py-2 px-3 bg-white rounded-xl border border-slate-200 text-sm">
+                      <span className="text-slate-600">{k}</span><span className="font-bold text-slate-800">{Math.round(v * 100) / 100}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          <div className="mt-10 flex flex-col sm:flex-row gap-3">
+            <Link to="/" className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 px-8 py-4 rounded-xl font-bold transition-colors text-center">
+              Kembali ke Beranda
+            </Link>
+            <Link to={`/angket/${kode}`} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold transition-colors shadow-lg shadow-indigo-200 text-center">
+              Isi lagi
+            </Link>
           </div>
-        )}
-
-        <div className="flex gap-3 pt-1">
-          <Link to="/" className="flex-1 py-3.5 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold text-center transition-colors flex items-center justify-center gap-2">
-            <i className="fa-solid fa-house text-xs" /> Beranda
-          </Link>
-          <Link to={`/angket/${kode}`} className="flex-1 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold text-center shadow-md shadow-indigo-200 transition-colors flex items-center justify-center gap-2">
-            Isi lagi <i className="fa-solid fa-arrow-right text-xs" />
-          </Link>
+          <p className="text-xs text-slate-400 mt-4">Link angket tetap aktif selama periode dibuka. Skor skala 1–4.</p>
         </div>
-        <p className="text-[11px] text-slate-400">Link angket tetap aktif selama periode dibuka. Data skala 1–4.</p>
       </div>
+      <footer className="py-6 text-center text-slate-400 text-sm font-medium"><p>&copy; {new Date().getFullYear()} Monev RPL — UIN Raden Fatah Palembang.</p></footer>
     </div>
   );
 }

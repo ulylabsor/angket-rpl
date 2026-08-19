@@ -1,0 +1,85 @@
+- generic [ref=f11e3]:
+  - banner [ref=f11e4]:
+    - generic [ref=f11e5]:
+      - generic [ref=f11e6]:
+        - button "" [ref=f11e7]
+        - generic [ref=f11e9]: 
+        - generic [ref=f11e11]:
+          - heading "Pengelola RPL Fakultas/Pascasarjana/Prodi" [level=2] [ref=f11e12]
+          - paragraph [ref=f11e13]: UIN Raden Fatah · RPL Tipe A · FAK · 21 butir · skala 1–5
+      - generic [ref=f11e14]:
+        - generic [ref=f11e15]: 0/21
+        - generic [ref=f11e16]: 17%
+    - list [ref=f11e20]:
+      - listitem [ref=f11e21]:
+        - button " Identitas Nama & prodi" [ref=f11e22]:
+          - generic [ref=f11e23]: 
+          - generic [ref=f11e25]:
+            - generic [ref=f11e26]: Identitas
+            - generic [ref=f11e27]: Nama & prodi
+      - listitem [ref=f11e28]:
+        - button " Input 6 butir" [disabled] [ref=f11e30]:
+          - generic [ref=f11e31]: 
+          - generic [ref=f11e33]:
+            - generic [ref=f11e34]: Input
+            - generic [ref=f11e35]: 6 butir
+      - listitem [ref=f11e36]:
+        - button " Proses 9 butir" [disabled] [ref=f11e38]:
+          - generic [ref=f11e39]: 
+          - generic [ref=f11e41]:
+            - generic [ref=f11e42]: Proses
+            - generic [ref=f11e43]: 9 butir
+      - listitem [ref=f11e44]:
+        - button " Output 6 butir" [disabled] [ref=f11e46]:
+          - generic [ref=f11e47]: 
+          - generic [ref=f11e49]:
+            - generic [ref=f11e50]: Output
+            - generic [ref=f11e51]: 6 butir
+      - listitem [ref=f11e52]:
+        - button " Terbuka Q21–Q25" [disabled] [ref=f11e54]:
+          - generic [ref=f11e55]: 
+          - generic [ref=f11e57]:
+            - generic [ref=f11e58]: Terbuka
+            - generic [ref=f11e59]: Q21–Q25
+      - listitem [ref=f11e60]:
+        - button " Review Kirim" [disabled] [ref=f11e62]:
+          - generic [ref=f11e63]: 
+          - generic [ref=f11e65]:
+            - generic [ref=f11e66]: Review
+            - generic [ref=f11e67]: Kirim
+  - main [ref=f11e68]:
+    - generic [ref=f11e69]:
+      - generic [ref=f11e70]:
+        - generic [ref=f11e71]: Langkah 1/6 · Identitas
+        - heading "Pengelola RPL Fakultas/Pascasarjana/Prodi" [level=3] [ref=f11e73]
+        - paragraph [ref=f11e74]:
+          - text: Silakan isi identitas dan beri penilaian — skala 1–5.
+          - generic [ref=f11e75]: 21 butir
+          - text: .
+      - generic [ref=f11e76]:
+        - generic [ref=f11e77]:
+          - generic [ref=f11e78]:
+            - generic [ref=f11e79]: Nama *
+            - textbox "Nama *" [ref=f11e80]:
+              - /placeholder: Nama lengkap / inisial (MHS boleh inisial)
+          - generic [ref=f11e81]:
+            - generic [ref=f11e82]: Jabatan *
+            - textbox "Jabatan *" [ref=f11e83]:
+              - /placeholder: "Contoh: Kaprodi, Asesor, Mahasiswa"
+          - generic [ref=f11e84]:
+            - generic [ref=f11e85]: Unit *
+            - textbox "Unit *" [ref=f11e86]:
+              - /placeholder: "Contoh: FITK, Pascasarjana, Universitas"
+          - generic [ref=f11e87]:
+            - generic [ref=f11e88]: Fakultas *
+            - combobox "Fakultas *" [ref=f11e89]:
+              - option "Pilih Fakultas" [selected]
+          - generic [ref=f11e90]:
+            - generic [ref=f11e91]: Program Studi *
+            - combobox "Program Studi *" [ref=f11e92]:
+              - option "Pilih Prodi" [selected]
+        - paragraph [ref=f11e93]: "Skala 1–5: 1=Sangat Kurang, 2=Kurang, 3=Cukup, 4=Baik, 5=Sangat Baik."
+      - paragraph [ref=f11e94]: Lengkapi identitas (termasuk Fakultas & Prodi) dan pastikan periode terpilih.
+      - button "Lanjut ke dimensi " [disabled] [ref=f11e96]:
+        - text: Lanjut ke dimensi
+        - generic [ref=f11e97]: 
