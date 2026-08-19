@@ -224,48 +224,48 @@ export default function AngketWizard() {
   // SurveyFlow-style renderSurvey: per-step progress + header + questions
   return (
     <div className="page-pattern min-h-screen font-sans text-slate-800 flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
-      {/* Public header */}
+      {/* Public header — kompak di HP biar fokus ke soal */}
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
-          <Link to="/" className="flex items-center gap-2 group">
-            <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-8 h-8 object-contain rounded-lg" />
-            <span className="font-extrabold text-xl text-slate-800 tracking-tight">Monev RPL</span>
-            <span className="hidden md:inline text-xs text-slate-500">· UIN Raden Fatah · {K} · {detail.butir.length} butir</span>
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 h-12 sm:h-14 flex items-center justify-between gap-2">
+          <Link to="/" className="flex items-center gap-2 group min-w-0">
+            <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded-lg shrink-0" />
+            <span className="font-extrabold text-[15px] sm:text-xl text-slate-800 tracking-tight">Monev RPL</span>
+            <span className="hidden lg:inline text-xs text-slate-500 truncate">· UIN Raden Fatah · {K} · {detail.butir.length} butir</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline-flex text-xs font-bold text-slate-600 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full">{Object.keys(skor).length}/{detail.butir.length}</span>
-            <span className="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-full">{Math.round(progress)}% Selesai</span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="hidden sm:inline-flex text-xs font-bold text-slate-600 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-full">{Object.keys(skor).length}/{detail.butir.length}</span>
+            <span className="text-[11px] sm:text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full">{Math.round(progress)}%</span>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-4xl mx-auto py-8 px-4 sm:px-0">
-        {/* Step progress header — SurveyFlow 1:1 */}
-        <div className="mb-10 animate-fade-in-up">
-          <div className="flex justify-between items-end mb-2">
-            <span className="text-sm font-bold text-indigo-600 tracking-wider uppercase">
+      <main className="flex-1 w-full max-w-4xl mx-auto py-4 sm:py-8 px-3 sm:px-6">
+        {/* Step progress header — kompak di HP */}
+        <div className="mb-4 sm:mb-10 animate-fade-in-up">
+          <div className="flex justify-between items-end gap-2 mb-1.5 sm:mb-2">
+            <span className="text-[11px] sm:text-sm font-bold text-indigo-600 tracking-wider uppercase leading-tight line-clamp-2">
               {step === 0 ? `Langkah 1 dari ${totalSteps}: Identitas` : isPenilaian ? `Langkah ${step + 1} dari ${totalSteps}: ${dims[step - 1]}` : step === dims.length + 1 ? `Langkah ${step + 1} dari ${totalSteps}: Terbuka` : `Langkah ${step + 1} dari ${totalSteps}: Review`}
             </span>
-            <span className="text-sm text-slate-500 font-medium">{Math.round(progress)}% Selesai</span>
+            <span className="text-xs sm:text-sm text-slate-500 font-medium shrink-0">{Math.round(progress)}%</span>
           </div>
-          <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
-            <div className="bg-gradient-to-r from-indigo-500 to-blue-500 h-2.5 rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+          <div className="w-full bg-slate-200 rounded-full h-1.5 sm:h-2.5 overflow-hidden">
+            <div className="bg-gradient-to-r from-indigo-500 to-blue-500 h-1.5 sm:h-2.5 rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
           </div>
         </div>
 
-        {/* Identitas — SurveyFlow dimension header + form */}
+        {/* Identitas — kompak di HP */}
         {step === 0 && (
           <div className="animate-fade-in-up">
-            <div className="bg-white rounded-t-3xl shadow-sm border border-slate-200 p-8 sm:p-10 border-b-0 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+            <div className="bg-white rounded-t-2xl sm:rounded-t-3xl shadow-sm border border-slate-200 p-5 sm:p-10 border-b-0 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none hidden sm:block" />
               <div className="relative">
-                <h2 className="text-3xl font-extrabold text-slate-900">{detail.template.label}</h2>
-                <p className="text-lg text-slate-600 leading-relaxed mt-2 max-w-3xl">Isi identitas responden sebelum penilaian. Tanda <span className="text-rose-500">*</span> wajib. Data hanya untuk rekap Monev RPL.</p>
-                {RESPONDEN[K] && <p className="text-sm text-slate-500 mt-2 flex items-center gap-2"><UsersIcon size={14} /> Responden: {RESPONDEN[K]}</p>}
-                <p className="text-sm text-slate-500 mt-1">{detail.butir.length} butir · skala 1–4</p>
+                <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900">{detail.template.label}</h2>
+                <p className="text-sm sm:text-lg text-slate-600 leading-relaxed mt-1.5 sm:mt-2 max-w-3xl">Isi identitas responden sebelum penilaian. Tanda <span className="text-rose-500">*</span> wajib.</p>
+                {RESPONDEN[K] && <p className="text-xs sm:text-sm text-slate-500 mt-2 flex items-center gap-2"><UsersIcon size={14} className="shrink-0" /> <span className="line-clamp-2">{RESPONDEN[K]}</span></p>}
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">{detail.butir.length} butir · skala 1–4</p>
               </div>
             </div>
-            <div className="bg-white rounded-b-3xl shadow-xl border border-slate-200 p-8 sm:p-10">
+            <div className="bg-white rounded-b-2xl sm:rounded-b-3xl shadow-xl border border-slate-200 p-4 sm:p-10">
               {!periodeId && <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800 mb-6 flex items-center gap-2"><AlertCircle size={18} /> Periode belum dipilih. Kembali ke beranda dan pilih periode aktif.</div>}
               {err && <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm mb-6">{err}</div>}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -374,35 +374,38 @@ export default function AngketWizard() {
           </div>
         )}
 
-        {/* Dimensi — SurveyFlow questions list 1:1 */}
+        {/* Dimensi — HP: 1 baris 4 kolom, kompak */}
         {isPenilaian && (
           <div className="animate-fade-in-up">
-            <div className="bg-white rounded-t-3xl shadow-sm border border-slate-200 p-8 sm:p-10 border-b-0 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+            <div className="bg-white rounded-t-2xl sm:rounded-t-3xl shadow-sm border border-slate-200 p-5 sm:p-10 border-b-0 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none hidden sm:block" />
               <div className="relative">
-                <h2 className="text-3xl font-extrabold text-slate-900">{dims[step - 1]}</h2>
-                <p className="text-lg text-slate-600 leading-relaxed mt-2 max-w-3xl">{currentDimButir.length} pernyataan · pilih 1–4 (1 di kiri) · {currentDimButir.filter((b) => skor[b.id] >= 1).length}/{currentDimButir.length} terisi</p>
-                <div className="mt-3 flex flex-wrap gap-1.5 text-xs"><span className="px-2 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-bold">1 Sangat Kurang</span><span className="px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold">2 Kurang</span><span className="px-2 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold">3 Baik</span><span className="px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold">4 Sangat Baik</span></div>
+                <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900">{dims[step - 1]}</h2>
+                <p className="text-sm sm:text-lg text-slate-600 leading-relaxed mt-1.5 sm:mt-2 max-w-3xl">{currentDimButir.length} pernyataan · {currentDimButir.filter((b) => skor[b.id] >= 1).length}/{currentDimButir.length} terisi</p>
+                <div className="mt-2 sm:mt-3 flex flex-wrap gap-1 sm:gap-1.5 text-[10px] sm:text-xs"><span className="px-2 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-bold">1 Sangat Kurang</span><span className="px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold">2 Kurang</span><span className="px-2 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold">3 Baik</span><span className="px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold">4 Sangat Baik</span></div>
               </div>
             </div>
-            <div className="bg-white rounded-b-3xl shadow-xl border border-slate-200 p-8 sm:p-10">
-              <div className="space-y-10">
+            <div className="bg-white rounded-b-2xl sm:rounded-b-3xl shadow-xl border border-slate-200 p-4 sm:p-10">
+              <div className="space-y-5 sm:space-y-10">
                 {currentDimButir.map((b, idx) => (
                   <div key={b.id} className="relative">
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-start">
-                      <span className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-500 text-sm mr-3 mt-0.5">{idx + 1}</span>
+                    <h3 className="text-[15px] sm:text-lg font-semibold text-slate-800 mb-3 sm:mb-4 flex items-start leading-snug">
+                      <span className="shrink-0 flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-slate-100 text-slate-500 text-xs sm:text-sm mr-2 sm:mr-3 mt-0.5">{idx + 1}</span>
                       <span>{b.teks}</span>
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:ml-11">
+                    <div className="grid grid-cols-4 gap-2 sm:gap-3 sm:ml-11">
                       {[1, 2, 3, 4].map((rating) => {
                         const isSelected = skor[b.id] === rating;
                         const rs = RATING_STYLE[rating];
                         return (
                           <button type="button" key={rating} onClick={() => handleOptionSelect(b.id, rating)}
-                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 group text-center ${isSelected ? `${rs.selBorder} ${rs.selBg} shadow-sm ring-1 ${rs.selBorder.replace("border-","ring-")}/30` : `border-slate-200 bg-white ${rs.hover}`}`}>
-                            <span className={`font-bold text-xl mb-1 ${isSelected ? rs.selNum : `text-slate-400 ${rs.hoverNum}`}`}>{rating}</span>
-                            <span className={`font-medium text-xs ${isSelected ? rs.selLabel : "text-slate-500"}`}>{SCALE_LABELS[rating]}</span>
-                            {isSelected && <span className={`absolute top-2 right-2 ${rs.selCheck}`}><Check size={16} strokeWidth={3} /></span>}
+                            className={`relative flex flex-col items-center justify-center py-3 px-1 sm:p-4 rounded-xl border-2 transition-all duration-200 group text-center ${isSelected ? `${rs.selBorder} ${rs.selBg} shadow-sm ring-1 ${rs.selBorder.replace("border-","ring-")}/30` : `border-slate-200 bg-white ${rs.hover}`}`}>
+                            <span className={`font-bold text-lg sm:text-xl leading-none ${isSelected ? rs.selNum : `text-slate-400 ${rs.hoverNum}`}`}>{rating}</span>
+                            <span className={`font-medium text-[10px] sm:text-xs leading-tight mt-1 ${isSelected ? rs.selLabel : "text-slate-500"}`}>
+                              <span className="sm:hidden">{rating === 1 ? "S.Kurang" : rating === 2 ? "Kurang" : rating === 4 ? "S.Baik" : "Baik"}</span>
+                              <span className="hidden sm:inline">{SCALE_LABELS[rating]}</span>
+                            </span>
+                            {isSelected && <span className={`absolute top-1.5 right-1.5 sm:top-2 sm:right-2 ${rs.selCheck}`}><Check size={12} strokeWidth={3} className="sm:w-4 sm:h-4" /></span>}
                           </button>
                         );
                       })}
@@ -416,17 +419,17 @@ export default function AngketWizard() {
           </div>
         )}
 
-        {/* Terbuka — SurveyFlow style */}
+        {/* Terbuka — kompak di HP */}
         {step === dims.length + 1 && (
           <div className="animate-fade-in-up">
-            <div className="bg-white rounded-t-3xl shadow-sm border border-slate-200 p-8 sm:p-10 border-b-0 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-violet-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+            <div className="bg-white rounded-t-2xl sm:rounded-t-3xl shadow-sm border border-slate-200 p-5 sm:p-10 border-b-0 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-violet-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none hidden sm:block" />
               <div className="relative">
-                <h2 className="text-3xl font-extrabold text-slate-900">Pertanyaan Terbuka</h2>
-                <p className="text-lg text-slate-600 leading-relaxed mt-2 max-w-3xl">Q21–Q25 — opsional, boleh dikosongkan. Dipakai untuk Temuan &amp; RTL.</p>
+                <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900">Pertanyaan Terbuka</h2>
+                <p className="text-sm sm:text-lg text-slate-600 leading-relaxed mt-1.5 sm:mt-2 max-w-3xl">Q21–Q25 — opsional. Untuk Temuan &amp; RTL.</p>
               </div>
             </div>
-            <div className="bg-white rounded-b-3xl shadow-xl border border-slate-200 p-8 sm:p-10">
+            <div className="bg-white rounded-b-2xl sm:rounded-b-3xl shadow-xl border border-slate-200 p-4 sm:p-10">
               <div className="space-y-6">
                 {[
                   ["q21", "21. Kekuatan penyelenggaraan RPL"],
