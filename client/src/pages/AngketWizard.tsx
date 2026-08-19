@@ -8,6 +8,12 @@ type AngketDetail = { template: { kode: string; nama: string; label: string }; d
 type PeriodeInfo = { id: string; nama: string; tahun: number; status: string; tglMulai?: string; tglSelesai?: string };
 
 const SCALE_LABELS: Record<number, string> = { 1: "Sangat Kurang", 2: "Kurang", 3: "Baik", 4: "Sangat Baik" };
+const RATING_STYLE: Record<number, { selBorder: string; selBg: string; selNum: string; selLabel: string; selCheck: string; hover: string; hoverNum: string }> = {
+  1: { selBorder: "border-rose-500", selBg: "bg-rose-50", selNum: "text-rose-700", selLabel: "text-rose-800", selCheck: "text-rose-600", hover: "hover:border-rose-300 hover:bg-rose-50/50", hoverNum: "group-hover:text-rose-500" },
+  2: { selBorder: "border-amber-500", selBg: "bg-amber-50", selNum: "text-amber-700", selLabel: "text-amber-800", selCheck: "text-amber-600", hover: "hover:border-amber-300 hover:bg-amber-50/50", hoverNum: "group-hover:text-amber-500" },
+  3: { selBorder: "border-indigo-500", selBg: "bg-indigo-50", selNum: "text-indigo-700", selLabel: "text-indigo-900", selCheck: "text-indigo-600", hover: "hover:border-indigo-300 hover:bg-indigo-50/50", hoverNum: "group-hover:text-indigo-500" },
+  4: { selBorder: "border-emerald-500", selBg: "bg-emerald-50", selNum: "text-emerald-700", selLabel: "text-emerald-800", selCheck: "text-emerald-600", hover: "hover:border-emerald-300 hover:bg-emerald-50/50", hoverNum: "group-hover:text-emerald-500" },
+};
 
 export default function AngketWizard() {
   const { kode } = useParams();
@@ -229,12 +235,13 @@ export default function AngketWizard() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:ml-11">
                       {[1, 2, 3, 4].map((rating) => {
                         const isSelected = skor[b.id] === rating;
+                        const rs = RATING_STYLE[rating];
                         return (
                           <button type="button" key={rating} onClick={() => handleOptionSelect(b.id, rating)}
-                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 group text-center ${isSelected ? "border-indigo-600 bg-indigo-50 shadow-sm" : "border-slate-200 bg-white hover:border-indigo-300 hover:bg-slate-50"}`}>
-                            <span className={`font-bold text-xl mb-1 ${isSelected ? "text-indigo-700" : "text-slate-400 group-hover:text-indigo-500"}`}>{rating}</span>
-                            <span className={`font-medium text-xs ${isSelected ? "text-indigo-900" : "text-slate-500"}`}>{SCALE_LABELS[rating]}</span>
-                            {isSelected && <span className="absolute top-2 right-2 text-indigo-600"><Check size={16} strokeWidth={3} /></span>}
+                            className={`relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 group text-center ${isSelected ? `${rs.selBorder} ${rs.selBg} shadow-sm ring-1 ${rs.selBorder.replace("border-","ring-")}/30` : `border-slate-200 bg-white ${rs.hover}`}`}>
+                            <span className={`font-bold text-xl mb-1 ${isSelected ? rs.selNum : `text-slate-400 ${rs.hoverNum}`}`}>{rating}</span>
+                            <span className={`font-medium text-xs ${isSelected ? rs.selLabel : "text-slate-500"}`}>{SCALE_LABELS[rating]}</span>
+                            {isSelected && <span className={`absolute top-2 right-2 ${rs.selCheck}`}><Check size={16} strokeWidth={3} /></span>}
                           </button>
                         );
                       })}
