@@ -1,4 +1,4 @@
-# Deps
+﻿# Deps
 node_modules/
 client/node_modules/
 server/node_modules/
@@ -30,6 +30,7 @@ Thumbs.db
 *.suo
 *.sw?
 
-# Tool cache
-.playwright-mcp/
-.claude/
+# Tool cache — uncomment yang mau di-ignore total
+# .claude/
+# .playwright-mcp/
+
