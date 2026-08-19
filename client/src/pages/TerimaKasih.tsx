@@ -47,7 +47,6 @@ export default function TerimaKasih() {
                 <span className="text-slate-500 font-medium">Kategori</span>
                 <span className={`px-3 py-1 rounded-full border text-xs font-bold ${kategoriTone[data.kategori ?? ""] ?? "bg-slate-100 border-slate-200 text-slate-700"}`}>{data.kategori ?? "—"}</span>
               </div>
-              {data?.tindakLanjut && <p className="text-xs text-slate-500 pt-2 border-t border-slate-200">Tindak lanjut: <b className="text-slate-700">{data.tindakLanjut}</b></p>}
               {data?.nilaiPerDimensi && (
                 <div className="pt-3 border-t border-slate-200 space-y-1.5">
                   <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Per dimensi</p>
