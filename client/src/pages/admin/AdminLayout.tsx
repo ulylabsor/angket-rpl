@@ -82,8 +82,8 @@ export default function AdminLayout() {
             <Link to="/" className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold shadow-md shadow-indigo-200">Isi Form</Link>
           </div>
         </header>
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-          <div className="max-w-6xl mx-auto">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+          <div className="max-w-[1600px] mx-auto min-w-0">
             <Outlet />
           </div>
         </div>

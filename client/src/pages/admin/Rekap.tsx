@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { ClipboardList } from "lucide-react";
 import { apiFetch, API } from "../../lib/api";
 import { useSSE } from "../../lib/sse";
@@ -138,8 +139,8 @@ export default function RekapPage() {
         </>
       )}
 
-      {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {selected && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px]" onClick={() => setSelected(null)} />
           <div className="relative bg-white w-full max-w-[640px] max-h-[85vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-fade-in-up">
             <div className="p-6 border-b border-slate-100 flex items-start justify-between gap-4">
@@ -159,8 +160,7 @@ export default function RekapPage() {
             </div>
             <div className="p-4 border-t border-slate-100 flex justify-end"><button onClick={() => setSelected(null)} className="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-bold">Tutup</button></div>
           </div>
-        </div>
-      )}
+        </div>, document.body)}
     </div>
   );
 }

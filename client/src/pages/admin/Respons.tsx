@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { apiFetch, API } from "../../lib/api";
 import { useSSE } from "../../lib/sse";
 
@@ -168,8 +169,8 @@ export default function ResponsPage() {
         </div>
       </div>
 
-      {detail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {detail && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px]" onClick={() => setDetail(null)} />
           <div className="relative bg-white w-full max-w-[820px] max-h-[88vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200 animate-fade-in-up">
             <div className="p-6 border-b border-slate-100 flex items-start justify-between gap-4">
@@ -235,8 +236,7 @@ export default function ResponsPage() {
               {detail.status !== "anulir" && <button onClick={() => anulir(detail.id)} className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold">Anulir</button>}
             </div>
           </div>
-        </div>
-      )}
+        </div>, document.body)}
     </div>
   );
 }
