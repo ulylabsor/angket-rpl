@@ -574,24 +574,24 @@ export default function AngketWizard() {
         const totalButir = detail.butir.length;
         const avgAll = (() => { const vals = detail.butir.map((b) => skor[b.id]).filter((v) => v >= 1); return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null; })();
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
             <button aria-label="Tutup" onClick={() => !submitting && setShowConfirm(false)} className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" />
-            <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up">
-              <div className="bg-white p-8 text-center border-b border-slate-100">
-                <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-16 h-16 object-contain mx-auto mb-4 drop-shadow-sm" />
-                <h3 className="text-xl font-bold text-slate-900">Kirim jawaban sekarang?</h3>
-                <p className="text-sm text-slate-500 mt-1">Jawaban akan terekam dan tidak dapat diubah.</p>
+            <div className="relative w-full max-w-md bg-white rounded-t-2xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up max-h-[86dvh] sm:max-h-none flex flex-col">
+              <div className="bg-white px-4 sm:px-8 pt-5 sm:pt-8 pb-4 sm:pb-5 text-center border-b border-slate-100 shrink-0">
+                <img src="/logo-radenfatah.png" alt="UIN Raden Fatah" className="w-12 h-12 sm:w-16 sm:h-16 object-contain mx-auto mb-3 sm:mb-4 drop-shadow-sm" />
+                <h3 className="text-[17px] sm:text-xl font-bold text-slate-900">Kirim jawaban sekarang?</h3>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">Jawaban akan terekam dan tidak dapat diubah.</p>
               </div>
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl px-3 py-3 text-center"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Angket</p><p className="text-sm font-bold text-slate-800">{K}</p></div>
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl px-3 py-3 text-center"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Terisi</p><p className="text-sm font-bold text-slate-800">{totalAnswered}/{totalButir}</p></div>
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl px-3 py-3 text-center"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Rata-rata</p><p className="text-sm font-bold text-indigo-600">{avgAll == null ? "—" : avgAll.toFixed(2)}</p></div>
+              <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-3 sm:space-y-4 overflow-auto overscroll-contain">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl px-2 sm:px-3 py-2.5 sm:py-3 text-center"><p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Angket</p><p className="text-xs sm:text-sm font-bold text-slate-800 mt-0.5">{K}</p></div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl px-2 sm:px-3 py-2.5 sm:py-3 text-center"><p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Terisi</p><p className="text-xs sm:text-sm font-bold text-slate-800 mt-0.5">{totalAnswered}/{totalButir}</p></div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl px-2 sm:px-3 py-2.5 sm:py-3 text-center"><p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Rata-rata</p><p className="text-xs sm:text-sm font-bold text-indigo-600 mt-0.5">{avgAll == null ? "—" : avgAll.toFixed(2)}</p></div>
                 </div>
-                {err && <div className="bg-red-50 border border-red-100 text-red-700 rounded-xl px-3 py-2.5 text-sm">{err}</div>}
-                <div className="flex gap-3">
-                  <button onClick={() => setShowConfirm(false)} disabled={submitting} className="flex-1 py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-semibold disabled:opacity-50">Batal</button>
-                  <button onClick={doSubmit} disabled={submitting} className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold shadow-md disabled:opacity-50 flex items-center justify-center gap-2"><CheckCircle2 size={16} /> {submitting ? "Mengirim..." : "Ya, kirim"}</button>
+                {err && <div className="bg-red-50 border border-red-100 text-red-700 rounded-lg sm:rounded-xl px-3 py-2.5 text-xs sm:text-sm">{err}</div>}
+                <div className="flex gap-2.5 sm:gap-3">
+                  <button onClick={() => setShowConfirm(false)} disabled={submitting} className="flex-1 py-3 sm:py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-semibold disabled:opacity-50">Batal</button>
+                  <button onClick={doSubmit} disabled={submitting} className="flex-1 py-3 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold shadow-md disabled:opacity-50 flex items-center justify-center gap-2"><CheckCircle2 size={16} /> {submitting ? "Mengirim..." : "Ya, kirim"}</button>
                 </div>
               </div>
             </div>
