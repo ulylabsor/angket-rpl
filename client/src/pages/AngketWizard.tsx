@@ -143,6 +143,9 @@ export default function AngketWizard() {
 
   const currentDimButir = step >= 1 && step <= dims.length ? (detail?.grouped[dims[step - 1]] ?? []) : [];
 
+  // Tiap ganti langkah (Lanjut / Kembali / Lengkapi dimensi) — mulai dari atas
+  useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
+
   const isIdentitasDone = useMemo(() => {
     if (!identitas.nama.trim()) return false;
     if (!identitas.jabatan.trim()) return false;
