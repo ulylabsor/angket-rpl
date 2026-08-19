@@ -469,58 +469,58 @@ export default function AngketWizard() {
             return { dim: d, avg, label, filled: items.filter((b) => skor[b.id] >= 1).length, total: items.length };
           });
           return (
-            <div className="animate-fade-in-up space-y-6">
-              <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 sm:p-10 text-center">
-                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4"><CheckCircle2 size={32} /></div>
-                <h2 className="text-2xl font-extrabold text-slate-900">Review &amp; Kirim</h2>
-                <p className="text-slate-600 mt-2">Periksa kembali sebelum mengirim. {totalAnswered}/{totalButir} terisi · {dims.length} dimensi · {terbukaCount}/5 terbuka.</p>
-                <div className="mt-4 flex flex-wrap justify-center gap-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${missingDims.length ? "bg-amber-50 border-amber-200 text-amber-700" : "bg-emerald-50 border-emerald-200 text-emerald-700"}`}>{missingDims.length ? `${missingDims.length} dimensi belum lengkap` : "Semua dimensi terisi — siap kirim"}</span>
+            <div className="animate-fade-in-up space-y-4 sm:space-y-6">
+              <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 p-5 sm:p-10 text-center">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4"><CheckCircle2 size={24} className="sm:w-8 sm:h-8" /></div>
+                <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900">Review &amp; Kirim</h2>
+                <p className="text-xs sm:text-base text-slate-600 mt-1 sm:mt-2 leading-relaxed">Periksa kembali sebelum mengirim. {totalAnswered}/{totalButir} terisi · {dims.length} dimensi · {terbukaCount}/5 terbuka.</p>
+                <div className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-2">
+                  <span className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold border ${missingDims.length ? "bg-amber-50 border-amber-200 text-amber-700" : "bg-emerald-50 border-emerald-200 text-emerald-700"}`}>{missingDims.length ? `${missingDims.length} dimensi belum lengkap` : "Semua dimensi terisi — siap kirim"}</span>
                 </div>
               </div>
 
-              <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                <h3 className="font-bold text-slate-800 flex items-center gap-2"><ClipboardList size={18} className="text-indigo-600" /> Identitas Responden</h3>
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Nama</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.nama || "—"}</p></div>
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Jabatan</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.jabatan || "—"}</p></div>
-                  {unitFixed && <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Unit</p><p className="font-semibold text-slate-800 mt-1 break-words">{UNIT_UIN}</p></div>}
-                  {isAsesor && <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas / Unit</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.unit || "—"}</p></div>}
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Periode</p>
+              <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 p-4 sm:p-8">
+                <h3 className="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2"><ClipboardList size={16} className="sm:w-[18px] sm:h-[18px] text-indigo-600" /> Identitas Responden</h3>
+                <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-sm">
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Nama</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.nama || "—"}</p></div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Jabatan</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.jabatan || "—"}</p></div>
+                  {unitFixed && <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Unit</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{UNIT_UIN}</p></div>}
+                  {isAsesor && <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas / Unit</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.unit || "—"}</p></div>}
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3">
+                    <p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Periode</p>
                     <div className="mt-1">
                       {!periodeId ? <p className="text-slate-400 text-sm">Belum dipilih</p> : periodeInfo ? (
                         <><p className="font-semibold text-slate-800 text-sm">{periodeInfo.nama} — {periodeInfo.tahun}</p><p className="text-xs text-slate-500 mt-1 flex items-center gap-2"><span className={`px-2 py-0.5 rounded-full border text-xs font-bold ${periodeInfo.status === "aktif" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-100 border-slate-200"}`}>{periodeInfo.status}</span><span className="font-mono text-[11px]">{periodeInfo.id.slice(0, 8)}…</span></p></>
                       ) : periodeErr ? <p className="font-mono text-sm text-amber-700">{periodeId.slice(0, 8)}… (tidak ditemukan)</p> : <p className="text-sm text-slate-400 animate-pulse">Memuat periode…</p>}
                     </div>
                   </div>
-                  {needFakProdi && <><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.fakultas || "—"}</p></div><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Program Studi</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.prodi || "—"}</p></div></>}
-                  {isMHS && <><div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Kewarganegaraan</p><p className="font-semibold text-slate-800 mt-1">{identitas.kewarganegaraan}</p></div>{identitas.kewarganegaraan === "WNA" && <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3"><p className="text-xs font-bold uppercase tracking-wider text-slate-400">Asal Negara</p><p className="font-semibold text-slate-800 mt-1 break-words">{identitas.negara || "—"}</p></div>}</>}
+                  {needFakProdi && <><div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.fakultas || "—"}</p></div><div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Program Studi</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.prodi || "—"}</p></div></>}
+                  {isMHS && <><div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Kewarganegaraan</p><p className="font-semibold text-slate-800 mt-1 text-sm">{identitas.kewarganegaraan}</p></div>{identitas.kewarganegaraan === "WNA" && <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Asal Negara</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.negara || "—"}</p></div>}</>}
                 </div>
               </div>
 
-              <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                <h3 className="font-bold text-slate-800">Rincian per Dimensi</h3>
-                <p className="text-xs text-slate-500 mt-1">Skala 1–4 · rata-rata &amp; label mutu per dimensi.</p>
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 p-4 sm:p-8">
+                <h3 className="font-bold text-sm sm:text-base text-slate-800">Rincian per Dimensi</h3>
+                <p className="text-[11px] sm:text-xs text-slate-500 mt-1">Skala 1–4 · rata-rata &amp; label mutu per dimensi.</p>
+                <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {avgPerDim.map((r) => {
                     const done = r.filled === r.total;
                     return (
-                      <div key={r.dim} className={`rounded-2xl border p-4 ${done ? "bg-white border-slate-200" : "bg-amber-50/60 border-amber-200"}`}>
+                      <div key={r.dim} className={`rounded-xl sm:rounded-2xl border p-3 sm:p-4 ${done ? "bg-white border-slate-200" : "bg-amber-50/60 border-amber-200"}`}>
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-sm font-bold text-slate-800">{r.dim}</span>
-                          <span className={`px-2 py-1 rounded-full text-xs font-bold border ${r.label === "Sangat Baik" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : r.label === "Baik" ? "bg-indigo-50 border-indigo-200 text-indigo-700" : r.label === "Kurang" ? "bg-amber-50 border-amber-200 text-amber-700" : r.label === "Sangat Kurang" ? "bg-rose-50 border-rose-200 text-rose-700" : "bg-slate-50 border-slate-200"}`}>{r.label}</span>
+                          <span className="text-xs sm:text-sm font-bold text-slate-800 leading-tight">{r.dim}</span>
+                          <span className={`shrink-0 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold border ${r.label === "Sangat Baik" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : r.label === "Baik" ? "bg-indigo-50 border-indigo-200 text-indigo-700" : r.label === "Kurang" ? "bg-amber-50 border-amber-200 text-amber-700" : r.label === "Sangat Kurang" ? "bg-rose-50 border-rose-200 text-rose-700" : "bg-slate-50 border-slate-200"}`}>{r.label}</span>
                         </div>
-                        <p className="text-xs text-slate-500 mt-1">{r.total} pernyataan · terisi <b className={done ? "text-emerald-700" : "text-amber-700"}>{r.filled}/{r.total}</b> · rata-rata <b className="text-slate-800">{r.avg == null ? "—" : r.avg.toFixed(2)}</b></p>
-                        {!done && <button onClick={() => setStep(1 + dims.indexOf(r.dim))} className="mt-3 w-full py-2 bg-white border border-amber-200 text-amber-700 rounded-xl text-xs font-bold hover:bg-amber-50">Lengkapi {r.dim} →</button>}
+                        <p className="text-[11px] sm:text-xs text-slate-500 mt-1">{r.total} pernyataan · terisi <b className={done ? "text-emerald-700" : "text-amber-700"}>{r.filled}/{r.total}</b> · rata-rata <b className="text-slate-800">{r.avg == null ? "—" : r.avg.toFixed(2)}</b></p>
+                        {!done && <button onClick={() => setStep(1 + dims.indexOf(r.dim))} className="mt-2 sm:mt-3 w-full py-2 sm:py-2 bg-white border border-amber-200 text-amber-700 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold hover:bg-amber-50">Lengkapi {r.dim} →</button>}
                       </div>
                     );
                   })}
                 </div>
                 {Object.values(terbuka).some((v) => String(v).trim()) && (
-                  <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Jawaban terbuka (Q21–Q25)</p>
-                    <div className="mt-2 space-y-2 text-sm">
+                  <div className="mt-4 sm:mt-6 rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
+                    <p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">Jawaban terbuka (Q21–Q25)</p>
+                    <div className="mt-2 space-y-2 text-xs sm:text-sm">
                       {(["q21","q22","q23","q24","q25"] as const).map((k, i) => {
                         const v = String((terbuka as any)[k] ?? "").trim();
                         if (!v) return null;
@@ -529,11 +529,11 @@ export default function AngketWizard() {
                     </div>
                   </div>
                 )}
-                {missingDims.length > 0 && <div className="mt-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-4 py-3 text-sm flex items-start gap-2"><AlertCircle size={16} className="mt-0.5 shrink-0" /><span>Lengkapi semua dimensi: <b>{missingDims.join(", ")}</b>.</span></div>}
-                <button onClick={() => setShowConfirm(true)} disabled={submitting || !periodeId || !!missingDims.length} className="mt-6 w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 disabled:opacity-50 flex items-center justify-center gap-2">
+                {missingDims.length > 0 && <div className="mt-3 sm:mt-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm flex items-start gap-2"><AlertCircle size={14} className="sm:w-4 sm:h-4 mt-0.5 shrink-0" /><span>Lengkapi semua dimensi: <b>{missingDims.join(", ")}</b>.</span></div>}
+                <button onClick={() => setShowConfirm(true)} disabled={submitting || !periodeId || !!missingDims.length} className="mt-4 sm:mt-6 w-full py-3 sm:py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 disabled:opacity-50 flex items-center justify-center gap-2 text-sm sm:text-base">
                   <CheckCircle2 size={18} /> {submitting ? "Mengirim..." : "Kirim Survei"}
                 </button>
-                {err && <div className="mt-3 bg-red-50 border border-red-100 text-red-700 rounded-xl px-4 py-3 text-sm">{err}</div>}
+                {err && <div className="mt-3 bg-red-50 border border-red-100 text-red-700 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm">{err}</div>}
               </div>
             </div>
           );
