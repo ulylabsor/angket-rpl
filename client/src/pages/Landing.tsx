@@ -130,37 +130,37 @@ export default function Landing() {
         <p>&copy; {new Date().getFullYear()} Monev RPL — UIN Raden Fatah Palembang. Desain Elegan &amp; Responsif.</p>
       </footer>
 
-      {/* Info modal — tata cara + info */}
+      {/* Info modal — tata cara + info — compact di HP */}
       {infoOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
           <button aria-label="Tutup" onClick={() => setInfoOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
-          <div className="relative w-full max-w-2xl bg-white rounded-[1.75rem] shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up max-h-[90vh] flex flex-col">
-            {/* header gradient */}
-            <div className="relative bg-gradient-to-br from-indigo-600 via-indigo-600 to-blue-600 px-6 sm:px-8 pt-7 pb-8 text-white overflow-hidden shrink-0">
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/15 rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-12 -left-12 w-56 h-56 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
-              <button onClick={() => setInfoOpen(false)} className="absolute top-4 right-4 w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur flex items-center justify-center text-white transition-colors">
-                <X size={18} />
+          <div className="relative w-full max-w-2xl bg-white rounded-t-[1.25rem] sm:rounded-[1.75rem] shadow-2xl border border-slate-200 overflow-hidden animate-fade-in-up max-h-[88dvh] sm:max-h-[90vh] flex flex-col">
+            {/* header gradient — ringkas di HP */}
+            <div className="relative bg-gradient-to-br from-indigo-600 via-indigo-600 to-blue-600 px-4 sm:px-8 pt-5 sm:pt-7 pb-5 sm:pb-8 text-white overflow-hidden shrink-0">
+              <div className="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 bg-white/15 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-40 h-40 sm:w-56 sm:h-56 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
+              <button onClick={() => setInfoOpen(false)} className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur flex items-center justify-center text-white transition-colors">
+                <X size={16} className="sm:w-[18px] sm:h-[18px]" />
               </button>
-              <div className="relative flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur border border-white/20 flex items-center justify-center shrink-0">
-                  <Info size={24} strokeWidth={2.5} />
+              <div className="relative flex items-center sm:items-start gap-3 sm:gap-4 pr-8">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur border border-white/20 flex items-center justify-center shrink-0">
+                  <Info size={20} className="sm:w-6 sm:h-6" strokeWidth={2.5} />
                 </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight">Panduan Pengisian Angket</h3>
-                  <p className="text-indigo-100 text-sm mt-1.5 leading-relaxed max-w-lg">Monev RPL Tipe A — UIN Raden Fatah Palembang. Dibaca sebelum mengisi.</p>
+                <div className="min-w-0">
+                  <h3 className="text-[17px] sm:text-2xl font-extrabold tracking-tight leading-tight">Panduan Pengisian Angket</h3>
+                  <p className="text-indigo-100 text-xs sm:text-sm mt-0.5 sm:mt-1.5 leading-relaxed">Monev RPL Tipe A — UIN Raden Fatah Palembang.</p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 overflow-auto px-6 sm:px-8 py-6 space-y-6">
+            <div className="flex-1 overflow-auto px-4 sm:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6 overscroll-contain">
               {/* langkah */}
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-lg bg-indigo-600 text-white grid place-items-center"><ClipboardCheck size={14} /></span>
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                  <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-indigo-600 text-white grid place-items-center"><ClipboardCheck size={13} className="sm:w-[14px] sm:h-[14px]" /></span>
                   Tata cara pengisian
                 </h4>
-                <ol className="mt-3 space-y-3">
+                <ol className="mt-2.5 sm:mt-3 space-y-2.5 sm:space-y-3">
                   {[
                     { n: "1", t: "Pilih Periode aktif di atas — tanpa periode angket tidak bisa dikirim." },
                     { n: "2", t: "Pilih jenis angket sesuai peran (UNIV / FAK / LPM / ASESOR / SEK / MHS)." },
@@ -169,56 +169,56 @@ export default function Landing() {
                     { n: "5", t: "Lengkapi semua dimensi, lalu isi Q21–Q25 (terbuka, opsional) bila ada masukan." },
                     { n: "6", t: "Cek Review, lalu Kirim. Data langsung masuk rekap & live via SSE ke admin." },
                   ].map((s) => (
-                    <li key={s.n} className="flex gap-3">
-                      <span className="shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white text-xs font-bold grid place-items-center">{s.n}</span>
-                      <p className="text-sm text-slate-700 leading-relaxed pt-0.5">{s.t}</p>
+                    <li key={s.n} className="flex gap-2.5 sm:gap-3">
+                      <span className="shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-slate-900 text-white text-[11px] sm:text-xs font-bold grid place-items-center">{s.n}</span>
+                      <p className="text-[13px] sm:text-sm text-slate-700 leading-relaxed pt-0.5">{s.t}</p>
                     </li>
                   ))}
                 </ol>
               </div>
 
               {/* skala */}
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-lg bg-amber-500 text-white grid place-items-center"><AlertCircle size={14} /></span>
+              <div className="rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-5">
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                  <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-500 text-white grid place-items-center"><AlertCircle size={13} className="sm:w-[14px] sm:h-[14px]" /></span>
                   Skala &amp; kategori mutu
                 </h4>
-                <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                  <span className="px-3 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-bold text-center">1 · Sangat Kurang</span>
-                  <span className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 font-bold text-center">2 · Kurang</span>
-                  <span className="px-3 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-center">3 · Baik</span>
-                  <span className="px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-center">4 · Sangat Baik</span>
+                <div className="mt-2.5 sm:mt-3 grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 text-[11px] sm:text-xs">
+                  <span className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-bold text-center">1 · Sangat Kurang</span>
+                  <span className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-amber-50 border border-amber-200 text-amber-700 font-bold text-center">2 · Kurang</span>
+                  <span className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-center">3 · Baik</span>
+                  <span className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-center">4 · Sangat Baik</span>
                 </div>
-                <p className="text-xs text-slate-500 mt-3">Nilai agregat dikonversi ke 0–100 dan dikategorikan untuk laporan &amp; tindak lanjut.</p>
+                <p className="text-[11px] sm:text-xs text-slate-500 mt-2.5 sm:mt-3 leading-relaxed">Nilai agregat dikonversi ke 0–100 dan dikategorikan untuk laporan &amp; tindak lanjut.</p>
               </div>
 
-              {/* info tambahan */}
-              <div className="grid sm:grid-cols-3 gap-3">
-                <div className="rounded-2xl bg-white border border-slate-200 p-4">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center"><Timer size={16} /></div>
-                  <p className="text-sm font-bold text-slate-800 mt-3">Durasi</p>
-                  <p className="text-xs text-slate-500 mt-1">±5–10 menit tergantung jenis angket.</p>
+              {/* info tambahan — 3 kolom bahkan di HP biar tidak memanjang */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                <div className="rounded-xl sm:rounded-2xl bg-white border border-slate-200 p-3 sm:p-4">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center"><Timer size={14} className="sm:w-4 sm:h-4" /></div>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 mt-2 sm:mt-3 leading-tight">Durasi</p>
+                  <p className="text-[11px] sm:text-xs text-slate-500 mt-1 leading-relaxed">±5–10 menit.</p>
                 </div>
-                <div className="rounded-2xl bg-white border border-slate-200 p-4">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center"><Shield size={16} /></div>
-                  <p className="text-sm font-bold text-slate-800 mt-3">Privasi</p>
-                  <p className="text-xs text-slate-500 mt-1">Identitas hanya untuk rekap Monev, tidak dipublikasi perorangan.</p>
+                <div className="rounded-xl sm:rounded-2xl bg-white border border-slate-200 p-3 sm:p-4">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center"><Shield size={14} className="sm:w-4 sm:h-4" /></div>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 mt-2 sm:mt-3 leading-tight">Privasi</p>
+                  <p className="text-[11px] sm:text-xs text-slate-500 mt-1 leading-relaxed">Hanya untuk rekap.</p>
                 </div>
-                <div className="rounded-2xl bg-white border border-slate-200 p-4">
-                  <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 grid place-items-center"><FileCheck size={16} /></div>
-                  <p className="text-sm font-bold text-slate-800 mt-3">Setelah kirim</p>
-                  <p className="text-xs text-slate-500 mt-1">Terekam permanen &amp; tampil di dashboard admin.</p>
+                <div className="rounded-xl sm:rounded-2xl bg-white border border-slate-200 p-3 sm:p-4">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-blue-50 text-blue-600 grid place-items-center"><FileCheck size={14} className="sm:w-4 sm:h-4" /></div>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 mt-2 sm:mt-3 leading-tight">Setelah kirim</p>
+                  <p className="text-[11px] sm:text-xs text-slate-500 mt-1 leading-relaxed">Live ke dashboard.</p>
                 </div>
               </div>
 
-              <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex gap-3">
-                <AlertCircle size={16} className="text-amber-600 shrink-0 mt-0.5" />
-                <p className="text-xs text-amber-800 leading-relaxed">Pilih angket sesuai peran agar data valid. Salah pilih? Kembali ke beranda dan pilih ulang — jawaban belum terkirim masih bisa diubah.</p>
+              <div className="rounded-lg sm:rounded-xl bg-amber-50 border border-amber-200 px-3 sm:px-4 py-2.5 sm:py-3 flex gap-2 sm:gap-3">
+                <AlertCircle size={14} className="text-amber-600 shrink-0 mt-0.5 sm:w-4 sm:h-4" />
+                <p className="text-[11px] sm:text-xs text-amber-800 leading-relaxed">Pilih angket sesuai peran agar data valid. Salah pilih? Kembali ke beranda dan pilih ulang — jawaban belum terkirim masih bisa diubah.</p>
               </div>
             </div>
 
-            <div className="px-6 sm:px-8 py-4 bg-slate-50 border-t border-slate-200 flex justify-end shrink-0">
-              <button onClick={() => setInfoOpen(false)} className="px-6 py-3 bg-slate-900 hover:bg-black text-white rounded-xl text-sm font-bold shadow-md">Mengerti</button>
+            <div className="px-4 sm:px-8 py-3 sm:py-4 bg-slate-50 border-t border-slate-200 flex justify-stretch sm:justify-end shrink-0 safe-pb">
+              <button onClick={() => setInfoOpen(false)} className="w-full sm:w-auto px-6 py-3.5 sm:py-3 bg-slate-900 hover:bg-black text-white rounded-xl text-sm font-bold shadow-md">Mengerti</button>
             </div>
           </div>
         </div>
