@@ -20,8 +20,15 @@ const UNIT_UIN = "UIN Raden Fatah Palembang";
 const JABATAN_UNIV = [
   "Rektor",
   "Wakil Rektor 1",
+  "Wakil Rektor 2",
+  "Wakil Rektor 3",
   "Ketua Pengelola RPL Universitas",
   "Sekretaris Pengelola RPL Universitas",
+  "Kepala Biro AAKK",
+  "Kepala Biro AUPK",
+  "Kepala Bagian Akademik dan Kemahasiswaan",
+  "Kepala Tim Organisasi dan Kepegawaian",
+  "Kepala PUSTIPD",
 ];
 
 const JABATAN_FAK = [
