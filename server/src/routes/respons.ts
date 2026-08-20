@@ -57,11 +57,12 @@ responsRouter.post("/", async (req, res) => {
   if ((kode === "FAK" || kode === "SEK" || kode === "MHS") && (!identitas.fakultas || !identitas.prodi)) {
     return res.status(400).json({ error: "Fakultas dan Program Studi wajib untuk angket ini" });
   }
-  // MHS WNA wajib negara asal
+  // MHS Warga Negara Asing wajib negara asal (terima WNA maupun label lengkap)
   if (kode === "MHS") {
-    const kw = String((identitas as any).kewarganegaraan ?? "").toUpperCase();
+    const kwRaw = String((identitas as any).kewarganegaraan ?? "").trim().toUpperCase();
+    const isWNA = kwRaw === "WNA" || kwRaw.includes("ASING");
     const negara = String((identitas as any).negara ?? (identitas as any).negaraAsal ?? (identitas as any).asalNegara ?? "").trim();
-    if (kw === "WNA" && !negara) return res.status(400).json({ error: "Asal negara wajib untuk WNA" });
+    if (isWNA && !negara) return res.status(400).json({ error: "Asal negara wajib untuk Warga Negara Asing" });
   }
 
   const seen = new Set<string>();

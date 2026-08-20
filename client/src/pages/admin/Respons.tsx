@@ -185,7 +185,7 @@ export default function ResponsPage() {
             <div className="p-6 border-b border-slate-100 flex items-start justify-between gap-4">
               <div>
                 <h3 className="font-bold text-slate-900">{(detail.identitas as any)?.nama ?? "—"}</h3>
-                <p className="text-sm text-slate-500">{(detail.identitas as any)?.jabatan ?? "—"} • {(detail.identitas as any)?.unit ?? "—"}</p>
+                <p className="text-sm text-slate-500">{(detail.identitas as any)?.jabatan ?? "—"} • {(detail.identitas as any)?.unit ?? "—"}{detail.templateKode === "MHS" && (detail.identitas as any)?.kewarganegaraan ? ` • ${String((detail.identitas as any).kewarganegaraan).toUpperCase().includes("ASING") || String((detail.identitas as any).kewarganegaraan).toUpperCase() === "WNA" ? "Warga Negara Asing" : "Warga Negara Indonesia"}${String((detail.identitas as any).negara ?? (detail.identitas as any).asalNegara ?? (detail.identitas as any).negaraAsal ?? "").trim() ? ` — ${String((detail.identitas as any).negara ?? (detail.identitas as any).asalNegara ?? (detail.identitas as any).negaraAsal ?? "").trim()}` : ""}` : ""} {(detail.identitas as any)?.fakultas ? `• ${(detail.identitas as any).fakultas}` : ""} {(detail.identitas as any)?.prodi ? ` / ${(detail.identitas as any).prodi}` : ""}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <span className="px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-bold">{detail.templateKode}</span>
                   <span className={`px-3 py-1 rounded-full border text-xs font-bold ${KAT_STYLE[detail.kategori] ?? "bg-white border-slate-200"}`}>{detail.kategori ?? "—"}</span>

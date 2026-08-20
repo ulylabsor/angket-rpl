@@ -96,13 +96,18 @@ exportRouter.get("/respons/excel", auth(["SUPER_ADMIN", "ADMIN_MONEV"]), async (
     { header: "Nama", key: "nama", width: 22 },
     { header: "Fakultas", key: "fakultas", width: 22 },
     { header: "Prodi", key: "prodi", width: 22 },
+    { header: "Kewarganegaraan", key: "kewarganegaraan", width: 22 },
+    { header: "Asal Negara", key: "asalNegara", width: 18 },
     { header: "Nilai Akhir", key: "nilaiAkhir", width: 12 },
     { header: "Kategori", key: "kategori", width: 16 },
   ];
   ws.getRow(1).font = { bold: true };
   for (const r of list) {
     const id: any = r.identitas as any;
-    ws.addRow({ tgl: new Date(r.createdAt).toLocaleDateString("id-ID"), periodeId: r.periodeId.slice(0, 8), templateKode: r.templateKode, nama: id?.nama ?? "", fakultas: id?.fakultas ?? "", prodi: id?.prodi ?? "", nilaiAkhir: r.nilaiAkhir ?? "", kategori: r.kategori ?? "" });
+    const kwRaw = String(id?.kewarganegaraan ?? "").trim();
+    const kewarganegaraan = !kwRaw ? "" : (kwRaw.toUpperCase() === "WNA" || kwRaw.toUpperCase().includes("ASING") ? "Warga Negara Asing" : kwRaw.toUpperCase() === "WNI" || kwRaw.toUpperCase().includes("INDONESIA") ? "Warga Negara Indonesia" : kwRaw);
+    const asalNegara = String(id?.negara ?? id?.asalNegara ?? id?.negaraAsal ?? "").trim();
+    ws.addRow({ tgl: new Date(r.createdAt).toLocaleDateString("id-ID"), periodeId: r.periodeId.slice(0, 8), templateKode: r.templateKode, nama: id?.nama ?? "", fakultas: id?.fakultas ?? "", prodi: id?.prodi ?? "", kewarganegaraan, asalNegara, nilaiAkhir: r.nilaiAkhir ?? "", kategori: r.kategori ?? "" });
   }
   res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
   res.setHeader("Content-Disposition", `attachment; filename="respons-${Date.now()}.xlsx"`);

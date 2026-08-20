@@ -88,7 +88,9 @@ export default function AngketWizard() {
   const [fakultasList, setFakultasList] = useState<any[]>([]);
   const [periodeInfo, setPeriodeInfo] = useState<PeriodeInfo | null>(null);
   const [periodeErr, setPeriodeErr] = useState(false);
-  const [identitas, setIdentitas] = useState({ nama: "", jabatan: "", unit: UNIT_UIN, fakultas: "", prodi: "", kewarganegaraan: "WNI" as "WNI" | "WNA", negara: "" });
+  // Simpan label lengkap di state agar konsisten dengan permintaan UI
+  const [identitas, setIdentitas] = useState({ nama: "", jabatan: "", unit: UNIT_UIN, fakultas: "", prodi: "", kewarganegaraan: "Warga Negara Indonesia" as string, negara: "" });
+  const isWNAValue = (v: string) => v.trim().toUpperCase() === "WNA" || v.toUpperCase().includes("ASING");
   const [skor, setSkor] = useState<Record<string, number>>({});
   const [terbuka, setTerbuka] = useState({ q21: "", q22: "", q23: "", q24: "", q25: "" });
   const [step, setStep] = useState(0);
@@ -124,7 +126,7 @@ export default function AngketWizard() {
       else next.unit = "";
       if (K === "MHS") next.jabatan = "Mahasiswa";
       else if (prev.jabatan === "Mahasiswa" && K !== "MHS") next.jabatan = "";
-      if (K !== "MHS") { next.kewarganegaraan = "WNI"; next.negara = ""; }
+      if (K !== "MHS") { next.kewarganegaraan = "Warga Negara Indonesia"; next.negara = ""; }
       return next;
     });
   }, [K]);
@@ -153,7 +155,7 @@ export default function AngketWizard() {
     if (needFakProdi && (!identitas.fakultas.trim() || !identitas.prodi.trim())) return false;
     if (isMHS) {
       if (!identitas.kewarganegaraan) return false;
-      if (identitas.kewarganegaraan === "WNA" && !identitas.negara.trim()) return false;
+      if (isWNAValue(identitas.kewarganegaraan) && !identitas.negara.trim()) return false;
     }
     if (!periodeId) return false;
     return true;
@@ -167,7 +169,7 @@ export default function AngketWizard() {
 
   const handleNext = () => {
     if (step === 0 && !isIdentitasDone) {
-      if (isMHS && identitas.kewarganegaraan === "WNA" && !identitas.negara.trim()) setValidationError("Lengkapi identitas: asal negara wajib untuk WNA.");
+      if (isMHS && isWNAValue(identitas.kewarganegaraan) && !identitas.negara.trim()) setValidationError("Lengkapi identitas: asal negara wajib untuk Warga Negara Asing.");
       else setValidationError("Lengkapi identitas (dan periode) sebelum melanjutkan.");
       return;
     }
@@ -196,9 +198,11 @@ export default function AngketWizard() {
         prodi: needFakProdi ? identitas.prodi : null,
       };
       if (isMHS) {
-        identitasPayload.kewarganegaraan = identitas.kewarganegaraan;
-        identitasPayload.negara = identitas.kewarganegaraan === "WNA" ? identitas.negara : null;
-        identitasPayload.asalNegara = identitas.kewarganegaraan === "WNA" ? identitas.negara : null;
+        const wna = isWNAValue(identitas.kewarganegaraan);
+        // Normalisasi ke label lengkap saat kirim — server tetap terima WNA/asing (backward compat)
+        identitasPayload.kewarganegaraan = wna ? "Warga Negara Asing" : "Warga Negara Indonesia";
+        identitasPayload.negara = wna ? identitas.negara : null;
+        identitasPayload.asalNegara = wna ? identitas.negara : null;
       }
       const res: any = await apiFetch("/respons", {
         method: "POST",
@@ -345,12 +349,12 @@ export default function AngketWizard() {
                   <>
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700 mb-1">Kewarganegaraan <span className="text-rose-500">*</span></span>
-                      <select value={identitas.kewarganegaraan} onChange={(e) => setIdentitas({ ...identitas, kewarganegaraan: e.target.value as any, negara: e.target.value === "WNI" ? "" : identitas.negara })} className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm">
-                        <option value="WNI">WNI</option>
-                        <option value="WNA">WNA</option>
+                      <select value={identitas.kewarganegaraan} onChange={(e) => { const v = e.target.value; setIdentitas({ ...identitas, kewarganegaraan: v, negara: isWNAValue(v) ? identitas.negara : "" }); }} className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm">
+                        <option value="Warga Negara Indonesia">Warga Negara Indonesia</option>
+                        <option value="Warga Negara Asing">Warga Negara Asing</option>
                       </select>
                     </label>
-                    {identitas.kewarganegaraan === "WNA" && (
+                    {isWNAValue(identitas.kewarganegaraan) && (
                       <label className="block animate-fade-in-up">
                         <span className="block text-sm font-medium text-slate-700 mb-1">Asal Negara <span className="text-rose-500">*</span></span>
                         <input value={identitas.negara} onChange={(e) => setIdentitas({ ...identitas, negara: e.target.value })} placeholder="Contoh: Malaysia" className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-colors text-sm" />
@@ -498,7 +502,7 @@ export default function AngketWizard() {
                     </div>
                   </div>
                   {needFakProdi && <><div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Fakultas</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.fakultas || "—"}</p></div><div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Program Studi</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.prodi || "—"}</p></div></>}
-                  {isMHS && <><div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Kewarganegaraan</p><p className="font-semibold text-slate-800 mt-1 text-sm">{identitas.kewarganegaraan}</p></div>{identitas.kewarganegaraan === "WNA" && <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Asal Negara</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.negara || "—"}</p></div>}</>}
+                  {isMHS && <><div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Kewarganegaraan</p><p className="font-semibold text-slate-800 mt-1 text-sm">{isWNAValue(identitas.kewarganegaraan) ? "Warga Negara Asing" : "Warga Negara Indonesia"}</p></div>{isWNAValue(identitas.kewarganegaraan) && <div className="bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3"><p className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Asal Negara</p><p className="font-semibold text-slate-800 mt-1 break-words text-sm">{identitas.negara || "—"}</p></div>}</>}
                 </div>
               </div>
 
