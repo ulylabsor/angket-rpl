@@ -168,7 +168,7 @@ const FAKULTAS_SEED: { nama: string; kode: string; prodi: string[] }[] = [
   { nama: "Fakultas Syariah dan Hukum", kode: "FSH", prodi: ["S1 Hukum Keluarga Islam","S1 Hukum Ekonomi Syariah","S1 Hukum Tata Negara"] },
   { nama: "Fakultas Ekonomi dan Bisnis Islam", kode: "FEBI", prodi: ["S2 Ekonomi Syariah","S1 Ekonomi Syariah","S1 Perbankan Syariah","S1 Manajemen Zakat dan Wakaf"] },
   { nama: "Fakultas Adab dan Humaniora", kode: "FAH", prodi: ["S1 Sejarah Peradaban Islam","S1 Ilmu Perpustakaan","S1 Bahasa dan Sastra Arab"] },
-  { nama: "Fakultas Ushuluddin dan Pemikiran Islam", kode: "FUPI", prodi: ["S2 Ilmu Al-Quran dan Tafsir","S1 Ilmu Al-Quran dan Tafsir","S1 Ilmu Hadis","S1 Aqidah dan Filsafat Islam"] },
+  { nama: "Fakultas Ushuluddin dan Pemikiran Islam", kode: "FUPI", prodi: ["S2 Ilmu Al-Quran dan Tafsir","S1 Ilmu Al-Quran dan Tafsir","S1 Ilmu Hadis","S1 Aqidah dan Filsafat Islam","S1 Studi Agama-Agama"] },
 ];
 
 async function main() {
